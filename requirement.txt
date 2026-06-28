@@ -1,0 +1,35 @@
+7. Admin Dashboard
+
+Your colleague can:
+
+View new orders
+Update status
+Download requirements
+Contact customers
+
+Payment Screenshot Upload
+
+Many local businesses use UPI.
+
+Flow:
+
+Show QR code
+Customer pays
+Upload payment screenshot
+Order confirmed
+
+Simple and practical.
+
+1. Smart Order Form ⭐
+
+Instead of customers messaging on WhatsApp:
+
+Customer selects:
+
+Design Type
+Quantity
+Size
+Requirements
+Upload Reference Images
+
+This ensures all details are collected at once.

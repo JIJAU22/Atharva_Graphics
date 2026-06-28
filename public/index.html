@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atharv Graphics — We Print Your Imagination | Quality Printing & Gifting Services</title>
+    <meta name="description"
+        content="Atharv Graphics is your one-stop solution for all printing and gifting needs. Quality Flex Printing, Eco Printing, Sublimation, Gift Items, Visiting Cards & more in Maharashtra, India.">
+    <meta name="keywords"
+        content="printing services, flex printing, eco printing, sublimation printing, gift items, visiting cards, Atharv Graphics, Maharashtra printing">
+    <meta property="og:title" content="Atharv Graphics — We Print Your Imagination">
+    <meta property="og:description"
+        content="Quality Printing | Creative Designs | Perfect Gifts. Your one-stop solution for all printing and gifting needs.">
+    <meta property="og:type" content="website">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=Dancing+Script:wght@500;700&display=swap"
+        rel="stylesheet">
+    <!-- Admin Styles -->
+    <link rel="stylesheet" href="admin.css">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+
+
+<body>
+
+    <!-- ==================== CAMPAIGN BAR ==================== -->
+    <div class="campaign-bar" id="campaignBar" style="display: none;">
+        <div class="campaign-marquee">
+            <div class="marquee-content" id="promoBannerText">
+                <span>🔥 Trending Now: Personalized Magic Mirrors - Flat 20% OFF!</span>
+                <span>✨ Create Custom Gifts for Your Loved Ones</span>
+                <span>🎁 Free Shipping on orders above ₹1000!</span>
+                <span>🔥 Trending Now: Personalized Magic Mirrors - Flat 20% OFF!</span>
+                <span>✨ Create Custom Gifts for Your Loved Ones</span>
+                <span>🎁 Free Shipping on orders above ₹1000!</span>
+            </div>
+        </div>
+        <button class="close-campaign" id="closeCampaign" aria-label="Close campaign bar">&times;</button>
+    </div>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">
+                <img src="assets/images/ak-logo.png" alt="Atharv Graphics Logo" class="nav-logo-img">
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">About Us</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                <li><a href="#products" class="nav-link">Products</a></li>
+                <li><a href="#contact" class="nav-link">Contact Us</a></li>
+            </ul>
+
+            <a href="#contact" class="nav-cta">Get a Quote</a>
+            <!-- User Auth Buttons -->
+            <div id="clerk-auth-container" style="margin-left:10px; display: flex; align-items: center; gap: 10px;">
+            </div>
+            <a href="wishlist.html" id="wishlistBtn" class="nav-cta"
+                style="margin-left:10px; background: #ff4757; color: #fff; display:none; text-decoration: none;"><i
+                    class="fas fa-heart"></i> Wishlist</a>
+
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-accent-line"></div>
+                <h1 class="hero-title">
+                    WE PRINT<br>YOUR IDEAS,<br>WE GIFT YOUR<br><span class="highlight">EMOTIONS</span>
+                </h1>
+                <p class="hero-subtitle">Quality Printing | Creative Designs | Perfect Gifts</p>
+
+                <div class="hero-badges">
+                    <div class="hero-badge">
+                        <i class="fas fa-award"></i>
+                        <span>Premium<br>Quality</span>
+                    </div>
+                    <div class="hero-badge">
+                        <i class="fas fa-truck-fast"></i>
+                        <span>Fast<br>Delivery</span>
+                    </div>
+                    <div class="hero-badge">
+                        <i class="fas fa-tags"></i>
+                        <span>Best<br>Price</span>
+                    </div>
+                    <div class="hero-badge">
+                        <i class="fas fa-face-smile"></i>
+                        <span>Customer<br>Satisfaction</span>
+                    </div>
+                </div>
+
+                <a href="#services" class="btn btn-primary hero-cta">
+                    EXPLORE SERVICES <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="hero-image">
+                <img src="assets/images/hero-products.png"
+                    alt="Custom printed mugs, t-shirts, phone cases and gift items by Atharv Graphics" loading="eager">
+            </div>
+        </div>
+
+        <!-- Decorative elements -->
+        <div class="hero-dots"></div>
+    </section>
+
+    <!-- ==================== OUR SERVICES ==================== -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">OUR SERVICES</h2>
+                <div class="title-decoration">
+                    <span class="star"><i class="fas fa-star"></i></span>
+                    <span class="line"></span>
+                    <span class="star"><i class="fas fa-star"></i></span>
+                </div>
+            </div>
+
+            <div class="services-grid">
+                <!-- Gift Items -->
+                <div class="service-card" data-aos="fade-up">
+                    <div class="service-image">
+                        <img src="assets/images/gallery-custom-mug.png" alt="Personalized Gift Items">
+                        <div class="service-icon gift-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                    </div>
+                    <h3>GIFT ITEMS</h3>
+                    <p>Unique & Personalized Gift Items for every occasion. Birthday, Anniversary, Corporate & all
+                        Special Occasions.</p>
+                </div>
+
+                <!-- Flex Print -->
+                <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-image">
+                        <img src="assets/images/gallery-flex-banner.png" alt="Flex Printing Services">
+                        <div class="service-icon flex-icon">
+                            <i class="fas fa-print"></i>
+                        </div>
+                    </div>
+                    <h3>FLEX PRINT</h3>
+                    <p>High Resolution Flex Printing for Shop Boards, Banners, Hoardings, Standees & More.</p>
+                </div>
+
+                <!-- Eco Printing -->
+                <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-image">
+                        <img src="assets/images/gallery-samples.png" alt="Eco Friendly Printing">
+                        <div class="service-icon eco-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                    </div>
+                    <h3>ECO PRINTING</h3>
+                    <p>Eco Friendly & Sustainable Printing with Best Quality & Vibrant Results for a Better Tomorrow.
+                    </p>
+                </div>
+
+                <!-- Sublimation Print -->
+                <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="service-image">
+                        <img src="assets/images/gallery-tshirt.png" alt="Sublimation Printing">
+                        <div class="service-icon sublimation-icon">
+                            <i class="fas fa-shirt"></i>
+                        </div>
+                    </div>
+                    <h3>SUBLIMATION PRINT</h3>
+                    <p>High Quality Sublimation Printing for T-shirts, Mugs, Cushions, Plates, Keychains, Caps & More.
+                    </p>
+                </div>
+
+                <!-- Other Printing Services -->
+                <div class="service-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="service-image">
+                        <img src="assets/images/hero-products.png" alt="Other Printing Services">
+                        <div class="service-icon other-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                    </div>
+                    <h3>OTHER PRINTING SERVICES</h3>
+                    <p>Visiting Cards, Pamphlets, Posters, Stickers, ID Cards, Letterheads, Bill Books & More.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== WHY CHOOSE US ==================== -->
+    <section class="why-choose" id="why-choose">
+        <div class="container">
+            <h2 class="why-choose-title">WHY CHOOSE US?</h2>
+            <div class="why-choose-grid">
+                <div class="why-item">
+                    <i class="fas fa-medal"></i>
+                    <span>High Quality Printing</span>
+                </div>
+                <div class="why-item">
+                    <i class="fas fa-microchip"></i>
+                    <span>Latest Technology</span>
+                </div>
+                <div class="why-item">
+                    <i class="fas fa-indian-rupee-sign"></i>
+                    <span>Affordable Prices</span>
+                </div>
+                <div class="why-item">
+                    <i class="fas fa-clock"></i>
+                    <span>On Time Delivery</span>
+                </div>
+                <div class="why-item">
+                    <i class="fas fa-heart"></i>
+                    <span>100% Customer Satisfaction</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CALL TO ACTION BAR ==================== -->
+    <section class="cta-bar">
+        <div class="container cta-bar-content">
+            <div class="cta-phone">
+                <i class="fas fa-phone-volume"></i>
+                <div>
+                    <span class="cta-label">Call Us Now</span>
+                    <a href="tel:+9177058445094" class="cta-number">+91 70584 45094</a>
+                </div>
+            </div>
+            <div class="cta-tagline">
+                <span class="cursive-text">Let's Print Something</span>
+                <span class="cursive-text highlight-text">Amazing Together!</span>
+            </div>
+            <div class="cta-social">
+                <span class="cta-label">Follow Us</span>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/atharv_graphics_ak/" target="_blank" aria-label="Instagram"
+                        class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/share/1EDQZWQjcq/" target="_blank" aria-label="Facebook"
+                        class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://wa.me/917058445094" target="_blank" aria-label="WhatsApp" class="social-link"><i
+                            class="fab fa-whatsapp"></i></a>
+                    <a href="tel:+917058445094" aria-label="Phone" class="social-link"><i class="fas fa-phone"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ABOUT US ==================== -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">ABOUT US</h2>
+                <div class="title-decoration">
+                    <span class="star"><i class="fas fa-star"></i></span>
+                    <span class="line"></span>
+                    <span class="star"><i class="fas fa-star"></i></span>
+                </div>
+            </div>
+
+            <div class="about-grid">
+                <div class="about-content">
+                    <p>Atharv Graphics is a one-stop solution for all your printing and gifting needs. We provide high
+                        quality printing services with creative designs and best finishing. Customer satisfaction is our
+                        first priority. We believe in Quality, Creativity and Commitment.</p>
+                    <p>With years of experience in the printing industry, we have served hundreds of satisfied
+                        customers. From small visiting cards to large flex banners, from personalized gifts to corporate
+                        branding — we do it all with perfection.</p>
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Creative Designs</span>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Best Finishing</span>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>On-Time Delivery</span>
+                        </div>
+                        <div class="about-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Affordable Pricing</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="assets/images/about-shop.png" alt="Atharv Graphics printing workshop and studio">
+                    <div class="about-badge">
+                        <span class="badge-text-top">WE PRINT</span>
+                        <span class="badge-text-bottom">YOUR IMAGINATION</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== GALLERY ==================== -->
+    <section class="gallery" id="gallery">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">GALLERY</h2>
+                <div class="title-decoration">
+                    <span class="star"><i class="fas fa-star"></i></span>
+                    <span class="line"></span>
+                    <span class="star"><i class="fas fa-star"></i></span>
+                </div>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-item" data-aos="zoom-in">
+                    <img src="assets/images/gallery-flex-banner.png" alt="Custom Flex Banner - Grand Opening"
+                        loading="lazy">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                        <span>Flex Banner</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
+                    <img src="assets/images/gallery-custom-mug.png" alt="Custom Printed Mug" loading="lazy">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                        <span>Custom Mug</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
+                    <img src="assets/images/gallery-tshirt.png" alt="Sublimation Printed T-Shirt" loading="lazy">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                        <span>T-Shirt Print</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300">
+                    <img src="assets/images/hero-products.png" alt="Gift Items Collection" loading="lazy">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                        <span>Gift Items</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="400">
+                    <img src="assets/images/about-shop.png" alt="Our Printing Studio" loading="lazy">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                        <span>Our Studio</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="500">
+                    <img src="assets/images/gallery-samples.png" alt="Sample Print Products" loading="lazy">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                        <span>Sample Products</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-cta">
+                <a href="https://wa.me/917058445094?text=Hi%2C%20I%20would%20like%20to%20see%20more%20of%20your%20work"
+                    target="_blank" class="btn btn-outline">VIEW MORE <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== PRODUCTS ==================== -->
+    <section class="products" id="products">
+        <div class="container">
+            <div class="section-header" style="position: relative;">
+                <h2 class="section-title">OUR PRODUCTS</h2>
+                <div class="title-decoration">
+                    <span class="star"><i class="fas fa-star"></i></span>
+                    <span class="line"></span>
+                    <span class="star"><i class="fas fa-star"></i></span>
+                </div>
+                <!-- Inline Admin Add Product Button -->
+                <div id="adminControlsContainer" style="display:none; gap: 10px; margin-top: 15px; justify-content: center;">
+                    <button id="openAdminBannerBtn" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" title="Edit Promo Banner">
+                        <i class="fas fa-bullhorn"></i> Edit Banner
+                    </button>
+                    <button id="openAdminInsightsBtn" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" title="Customer Insights">
+                        <i class="fas fa-chart-line"></i> Insights
+                    </button>
+                    <button id="addProductBtn" class="btn btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 6px;" title="Add New Product">
+                        <i class="fas fa-plus"></i> Add Product
+                    </button>
+                </div>
+            </div>
+
+            <div class="product-controls-container" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; align-items: center;">
+                <div class="search-sort-bar" style="display: flex; gap: 10px; width: 100%; max-width: 600px;">
+                    <input type="text" id="productSearch" placeholder="Search products..." style="flex: 1; padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Inter', sans-serif;">
+                    <select id="productSort" style="padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Inter', sans-serif; background: #fff; cursor: pointer;">
+                        <option value="newest">Newest</option>
+                        <option value="price_asc">Price: Low to High</option>
+                        <option value="price_desc">Price: High to Low</option>
+                    </select>
+                </div>
+
+                <div class="product-filters">
+                    <button class="filter-btn active" data-filter="all">All Products</button>
+                    <button class="filter-btn" data-filter="gifts">Personalized Gifts</button>
+                    <button class="filter-btn" data-filter="apparel">Apparel</button>
+                    <button class="filter-btn" data-filter="marketing">Marketing Print</button>
+                </div>
+            </div>
+
+            <!-- Admin Panel Removed (Options moved to profile & inline + button) -->
+
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be injected here dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SPECIAL OFFERS ==================== -->
+    <section class="special-offers">
+        <div class="container offers-content">
+            <div class="offers-left">
+                <div class="offers-icon">
+                    <i class="fas fa-percent"></i>
+                </div>
+                <div>
+                    <h2>SPECIAL OFFERS</h2>
+                    <p>Big Savings on Bulk Orders & Festival Offers</p>
+                    <div style="display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap;">
+                        <a href="https://wa.me/917058445094?text=Hi%2C%20I%20am%20interested%20in%20your%20special%20offers"
+                            target="_blank" class="btn btn-primary">CONTACT US NOW</a>
+                        <button id="openCustomDesignBtn" class="btn btn-outline" style="background: transparent; color: #ffeb3b; border: 2px solid #ffeb3b; cursor: pointer;">REQUEST CUSTOM DESIGN</button>
+                    </div>
+                </div>
+            </div>
+            <div class="offers-right">
+                <p class="offers-tagline">
+                    Great <em>Design</em><br>
+                    Perfect <em>Print</em><br>
+                    Unforgettable <em>Impression</em>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CONTACT US ==================== -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-header light">
+                <h2 class="section-title">CONTACT US</h2>
+                <div class="title-decoration">
+                    <span class="star"><i class="fas fa-star"></i></span>
+                    <span class="line"></span>
+                    <span class="star"><i class="fas fa-star"></i></span>
+                </div>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-volume"></i>
+                        </div>
+                        <div>
+                            <a href="tel:+9177058445094">+91 70584 45094</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <a href="mailto:atharvkhondre495@gmail.com">atharvkhondre495@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-location-dot"></i>
+                        </div>
+                        <div>
+                            <p>Govindrao High School, Near More Dental Care,<br>Narayan Talkies, Kagwade Mala,
+                                Ichalkaranji</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <p>Mon - Sat : 10:00 AM – 8:00 PM<br>Sunday : Closed</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-wrapper">
+                    <h3>GET IN TOUCH</h3>
+                    <form class="contact-form" id="contactForm">
+                        <input type="text" id="userName" name="name" placeholder="Your Name" required>
+                        <input type="tel" id="userMobile" name="mobile" placeholder="Your Mobile" required>
+                        <input type="email" id="userEmail" name="email" placeholder="Your Email">
+                        <textarea id="userMessage" name="message" placeholder="Your Message" rows="4"
+                            required></textarea>
+                        <button type="submit" class="btn btn-primary btn-submit" id="sendMessage">
+                            SEND MESSAGE <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="contact-map">
+                    <iframe
+                        src="https://maps.google.com/maps?q=Atharv%20Graphics%20Ak%20Ichalkaranji&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                        width="100%" height="220" style="border:0; border-radius: 10px; opacity: 0.9;"
+                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <a href="https://www.google.com/maps/place/Atharv+Graphics+Ak/@16.684194,74.47038,3346m/data=!3m1!1e3!4m6!3m5!1s0x3bc0e339e1009c0b:0x9f4d6899c183d0a1!8m2!3d16.6841936!4d74.4703796!16s%2Fg%2F11ypqpyp96?hl=en-US&entry=ttu&g_ep=EgoyMDI2MDYyMy4wIKXMDSoASAFQAw%3D%3D" target="_blank"
+                        class="btn btn-outline-light" id="getDirections" style="margin-top: 15px;">
+                        GET DIRECTIONS <i class="fas fa-map-location-dot"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="container">
+            <!-- Footer Top: Main Columns -->
+            <div class="footer-grid">
+                <!-- Column 1: Brand -->
+                <div class="footer-col footer-brand">
+                    <img src="assets/images/ak-logo.png" alt="Atharv Graphics Logo" class="footer-logo-img">
+                    <p class="footer-brand-desc">Your one-stop solution for all printing and gifting needs. Quality, Creativity &amp; Commitment.</p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/atharv_graphics_ak/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/share/1EDQZWQjcq/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://wa.me/917058445094" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="tel:+917058445094" aria-label="Phone"><i class="fas fa-phone"></i></a>
+                    </div>
+                </div>
+
+                <!-- Column 2: Quick Links -->
+                <div class="footer-col">
+                    <h4 class="footer-heading">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Services</a></li>
+                        <li><a href="#gallery"><i class="fas fa-chevron-right"></i> Gallery</a></li>
+                        <li><a href="#products"><i class="fas fa-chevron-right"></i> Products</a></li>
+                        <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Our Services -->
+                <div class="footer-col">
+                    <h4 class="footer-heading">Our Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Gift Items</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Flex Printing</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Eco Printing</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Sublimation Print</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Visiting Cards</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Photo Frames</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Contact Info -->
+                <div class="footer-col">
+                    <h4 class="footer-heading">Contact Info</h4>
+                    <ul class="footer-contact-list">
+                        <li>
+                            <i class="fas fa-location-dot"></i>
+                            <span>Govindrao High School, Near More Dental Care, Narayan Talkies, Kagwade Mala, Ichalkaranji</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+917058445094">+91 70584 45094</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:atharvkhondre495@gmail.com">atharvkhondre495@gmail.com</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>Mon - Sat: 10 AM – 8 PM<br>Sunday: Closed</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p class="footer-tagline cursive-text">Thank You for <span class="underline-text">Supporting Local Business!</span> <i class="fas fa-heart"></i></p>
+                <div class="footer-bottom-bar">
+                    <p class="footer-copyright">&copy; 2024 Atharv Graphics. All Rights Reserved.</p>
+                    <p class="footer-credit">Crafted with <i class="fas fa-heart"></i> in Ichalkaranji</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Gallery Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Close lightbox"><i
+                class="fas fa-times"></i></button>
+        <button class="lightbox-prev" id="lightboxPrev" aria-label="Previous image"><i
+                class="fas fa-chevron-left"></i></button>
+        <img src="" alt="Gallery image" class="lightbox-image" id="lightboxImage">
+        <button class="lightbox-next" id="lightboxNext" aria-label="Next image"><i
+                class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/917058445094?text=Hi%2C%20I%20am%20interested%20in%20your%20services" target="_blank"
+        class="whatsapp-float" aria-label="Chat on WhatsApp" id="whatsappFloat">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+
+    <!-- Add Product Modal -->
+    <div id="addProductModal" class="modal admin-modal-backdrop" style="display:none;">
+        <div class="modal-content admin-modal">
+            <span class="close" id="addProductModalClose">&times;</span>
+            <h2>Add New Product</h2>
+            <form id="addProductForm">
+                <input type="text" id="prodTitle" placeholder="Product Title" required>
+                <select id="prodCategory" required>
+                    <option value="gifts">Personalized Gifts</option>
+                    <option value="apparel">Apparel</option>
+                    <option value="marketing">Marketing Print</option>
+                </select>
+                <input type="number" id="prodOriginalPrice" placeholder="Original Price (₹)" required>
+                <input type="number" id="prodDiscountPrice" placeholder="Discount Price (₹)" required>
+                <input type="number" step="0.1" id="prodRating" placeholder="Rating (e.g., 4.5)" required>
+                <label>Product Image</label>
+                <input type="file" id="prodImage" accept="image/*" required>
+                <button type="submit">Save Product</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Product Confirm Modal -->
+    <div id="deleteConfirmModal" class="modal admin-modal-backdrop" style="display:none;">
+        <div class="modal-content admin-modal" style="max-width: 400px; text-align: center;">
+            <h2 style="color: #ff4757; margin-bottom: 10px;">Delete Product?</h2>
+            <p style="margin-bottom: 25px; color: #555;">Are you sure you want to delete this product? This action cannot be undone immediately.</p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button id="cancelDeleteBtn" style="padding: 0.8rem 1.5rem; background: #eee; color: #333; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; flex: 1;">Cancel</button>
+                <button id="confirmDeleteBtn" style="padding: 0.8rem 1.5rem; background: #ff4757; color: white; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; flex: 1;">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Undo Toast Notification Container -->
+    <div id="undoToastContainer" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; display: flex; flex-direction: column; gap: 10px;"></div>
+
+    <!-- Edit Product Modal -->
+    <div id="editProductModal" class="modal admin-modal-backdrop" style="display:none;">
+        <div class="modal-content admin-modal" style="max-width: 500px;">
+            <span class="close" id="editProductModalClose">&times;</span>
+            <h2>Edit Product <i class="fas fa-edit" style="color: #ff4757;"></i></h2>
+            <p style="margin-bottom: 20px; font-size: 0.9rem; color: #555;">Update the details for this product below.</p>
+            <form id="editProductForm">
+                <input type="hidden" id="editProdId">
+                
+                <label style="display:block; margin-bottom: 5px; font-weight: 500;">Product Title *</label>
+                <input type="text" id="editProdTitle" placeholder="Product Title" required style="width: 100%; padding: 0.8rem; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                
+                <label style="display:block; margin-bottom: 5px; font-weight: 500;">Category *</label>
+                <select id="editProdCategory" required style="width:100%; padding:0.8rem; margin-bottom: 15px; border:1px solid #ddd; border-radius:4px; background: white;">
+                    <option value="gifts">Personalized Gifts</option>
+                    <option value="apparel">Apparel</option>
+                    <option value="marketing">Marketing Print</option>
+                </select>
+
+                <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                    <div style="flex: 1;">
+                        <label style="display:block; margin-bottom: 5px; font-weight: 500;">Original Price (₹) *</label>
+                        <input type="number" id="editProdOriginalPrice" placeholder="e.g., 599" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display:block; margin-bottom: 5px; font-weight: 500;">Discount Price (₹) *</label>
+                        <input type="number" id="editProdDiscountPrice" placeholder="e.g., 299" required style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <label style="display:block; margin-bottom: 5px; font-weight: 500;">Rating *</label>
+                <input type="number" step="0.1" id="editProdRating" placeholder="e.g., 4.5" required style="width: 100%; padding: 0.8rem; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                
+                <label style="display:block; margin-bottom: 5px; font-weight: 500;">Product Image <span style="font-size: 0.8rem; color: #888;">(Leave blank to keep current)</span></label>
+                <input type="file" id="editProdImage" accept="image/*" style="width: 100%; padding: 0.8rem; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px; background: #f8f9fa;">
+                
+                <button type="submit" style="width: 100%; padding: 1rem; background: #007bff; color: white; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 1rem; transition: background 0.3s;">Update Product</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Design Modal -->
+    <div id="customDesignModal" class="modal admin-modal-backdrop" style="display:none;">
+        <div class="modal-content admin-modal" style="max-width: 500px;">
+            <span class="close" id="customDesignModalClose">&times;</span>
+            <h2>Request Custom Design</h2>
+            <p style="margin-bottom: 15px; font-size: 0.9rem; color: #555;">Upload your image and tell us what you need. We will open a WhatsApp chat with your request!</p>
+            <form id="customDesignForm">
+                <input type="text" id="customDesignName" placeholder="Your Name" required>
+                <textarea id="customDesignDetails" placeholder="Describe what you want (e.g., Print this on a white mug)" rows="3" required style="width:100%; padding:0.8rem; margin-bottom:1rem; border:1px solid #ddd; border-radius:4px; font-family:'Inter',sans-serif;"></textarea>
+                <label>Upload Design/Photo</label>
+                <input type="file" id="customDesignImage" accept="image/*" required>
+                <button type="submit" id="customDesignSubmitBtn">Send via WhatsApp <i class="fab fa-whatsapp"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Banner Editor Modal -->
+    <div id="adminBannerModal" class="modal admin-modal-backdrop" style="display:none;">
+        <div class="modal-content admin-modal">
+            <span class="close" id="adminBannerModalClose">&times;</span>
+            <h2>Update Promo Banner</h2>
+            <form id="adminBannerForm">
+                <textarea id="adminBannerText" placeholder="Enter banner text (Leave empty to hide banner)" rows="3" style="width:100%; padding:0.8rem; margin-bottom:1rem; border:1px solid #ddd; border-radius:4px; font-family:'Inter',sans-serif;"></textarea>
+                <button type="submit">Update Banner</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Insights Modal -->
+    <div id="adminInsightsModal" class="modal admin-modal-backdrop" style="display:none;">
+        <div class="modal-content admin-modal" style="max-width: 600px;">
+            <span class="close" id="adminInsightsModalClose">&times;</span>
+            <h2>Customer Insights <i class="fas fa-chart-line" style="color: #007bff;"></i></h2>
+            <p style="margin-bottom: 15px; font-size: 0.9rem; color: #555;">Top products added to user wishlists.</p>
+            <div id="insightsTableContainer" style="max-height: 400px; overflow-y: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #eee;">
+                            <th style="padding: 10px;">Product</th>
+                            <th style="padding: 10px;">Wishlist Count</th>
+                        </tr>
+                    </thead>
+                    <tbody id="insightsTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Native Login / Register Modal -->
+    <div id="authModal" class="modal admin-modal-backdrop" style="display:none;">
+        <div class="modal-content admin-modal" style="max-width: 400px; padding: 2rem;">
+            <span class="close" id="authModalClose">&times;</span>
+            <div class="auth-tabs" style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button id="tabLogin" class="auth-tab active" style="flex: 1; padding: 10px; background: none; border: none; border-bottom: 2px solid #ff4757; font-weight: 600; cursor: pointer; color: #1a2a6c;">Login</button>
+                <button id="tabRegister" class="auth-tab" style="flex: 1; padding: 10px; background: none; border: none; border-bottom: 2px solid #ddd; font-weight: 600; cursor: pointer; color: #555;">Register</button>
+            </div>
+            
+            <div id="authErrorMsg" style="color: #ff4757; font-size: 0.9rem; margin-bottom: 15px; display: none; text-align: center;"></div>
+            
+            <form id="authForm">
+                <div id="registerFields" style="display: none;">
+                    <label>Full Name</label>
+                    <input type="text" id="authName" placeholder="Enter your name" style="width: 100%; padding: 0.8rem; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                
+                <label>Email Address</label>
+                <input type="email" id="authEmail" required placeholder="Enter your email" style="width: 100%; padding: 0.8rem; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                
+                <label>Password</label>
+                <input type="password" id="authPassword" required placeholder="Enter your password" style="width: 100%; padding: 0.8rem; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px;">
+                
+                <button type="submit" id="authSubmitBtn" style="width: 100%; padding: 1rem; background: #ff4757; color: white; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 1rem;">Login</button>
+            </form>
+        </div>
+    </div>
+    <!-- Smart Order Modal -->
+    <div id="smartOrderModal" class="modal admin-modal-backdrop" style="display:none;">
+        <div class="modal-content admin-modal" style="max-width: 500px;">
+            <span class="close" id="smartOrderModalClose">&times;</span>
+            <h2>Place Your Order <i class="fas fa-shopping-cart" style="color: #ff4757;"></i></h2>
+            <p style="margin-bottom: 20px; font-size: 0.9rem; color: #555;">Fill in the details for <strong id="smartOrderProductName">Product</strong> to process your order perfectly.</p>
+            
+            <form id="smartOrderForm">
+                <input type="hidden" id="smartOrderProductId">
+                <input type="hidden" id="smartOrderProductTitle">
+                <input type="hidden" id="smartOrderProductPrice">
+                
+                <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                    <div style="flex: 1;">
+                        <label>Your Name *</label>
+                        <input type="text" id="smartOrderName" required placeholder="Full Name" style="width: 100%; padding: 0.8rem; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label>WhatsApp Number *</label>
+                        <input type="text" id="smartOrderPhone" required placeholder="10-digit mobile" style="width: 100%; padding: 0.8rem; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                    <div style="flex: 1;">
+                        <label>Design Type *</label>
+                        <select id="smartOrderDesign" required style="width: 100%; padding: 0.8rem; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px; background: white;">
+                            <option value="">Select Design Type</option>
+                            <option value="Custom Print">Custom Print</option>
+                            <option value="Pre-made Template">Pre-made Template</option>
+                            <option value="Create New Design">Create New Design (Extra Charge)</option>
+                            <option value="Standard">Standard</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label>Quantity *</label>
+                        <input type="number" id="smartOrderQty" required min="1" value="1" style="width: 100%; padding: 0.8rem; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <label>Size / Dimensions</label>
+                <input type="text" id="smartOrderSize" placeholder="e.g., A4, 12x18 inch, L, XL" style="width: 100%; padding: 0.8rem; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
+
+                <label>Specific Requirements *</label>
+                <textarea id="smartOrderReqs" required rows="3" placeholder="Color preferences, text to include, etc." style="width: 100%; padding: 0.8rem; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; font-family:'Inter',sans-serif;"></textarea>
+
+                <label>Reference Image (Optional)</label>
+                <input type="file" id="smartOrderImage" accept="image/*" style="width: 100%; padding: 0.8rem; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px; background: #f8f9fa;">
+
+                <button type="submit" id="smartOrderSubmitBtn" style="width: 100%; padding: 1rem; background: #ff4757; color: white; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 1rem; transition: background 0.3s;">
+                    Proceed to WhatsApp <i class="fab fa-whatsapp"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js?v=2"></script>
+    <script src="userAuth.js?v=2"></script>
+    <script src="admin.js?v=2"></script>
+</body>
+
+</html>

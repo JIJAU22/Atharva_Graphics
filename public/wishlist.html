@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist - Atharv Graphics</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Clerk Authentication -->
+    <script async crossorigin="anonymous"
+        data-clerk-publishable-key="pk_test_c2Vuc2libGUtcG9sZWNhdC03Mi5jbGVyay5hY2NvdW50cy5kZXYk"
+        src="https://sensible-polecat-72.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+        type="text/javascript"></script>
+</head>
+
+<body style="background: #f8f9fa;">
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="navbar" id="navbar" style="background: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="assets/images/ak-logo.png" alt="Atharv Graphics Logo" class="nav-logo-img">
+            </a>
+            <ul class="nav-links" style="margin: 0;">
+                <li><a href="index.html" class="nav-link" style="color:#111;">Back to Home</a></li>
+            </ul>
+            <div id="clerk-auth-container" style="margin-left:10px; display: flex; align-items: center; gap: 10px;">
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== WISHLIST SECTION ==================== -->
+    <section class="wishlist-section" style="padding: 120px 20px 60px; min-height: 80vh;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">MY WISHLIST</h2>
+                <div class="title-decoration">
+                    <span class="star"><i class="fas fa-star"></i></span>
+                    <span class="line"></span>
+                    <span class="star"><i class="fas fa-star"></i></span>
+                </div>
+            </div>
+
+            <div id="wishlistContainer"
+                style="margin-top: 20px; display: flex; flex-direction: column; gap: 15px; max-width: 800px; margin-inline: auto;">
+                <p style="text-align:center; font-family:'Poppins';">Loading your wishlist...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer style="background: #111; color: #fff; text-align: center; padding: 20px 0;">
+        <p style="margin:0;">&copy; 2026 Atharv Graphics. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        window.getAuthToken = () => {
+            return localStorage.getItem('auth_token');
+        };
+
+        window.addEventListener('load', async () => {
+            const authContainer = document.getElementById('clerk-auth-container');
+            const wishlistContainer = document.getElementById('wishlistContainer');
+
+            const token = window.getAuthToken();
+            let currentUser = null;
+
+            if (token) {
+                try {
+                    const res = await fetch('/api/auth/me', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        currentUser = data.user;
+                    }
+                } catch (err) {
+                    console.error('Error verifying token', err);
+                }
+            }
+
+            const updateUI = async () => {
+                if (currentUser) {
+                    if (authContainer) {
+                        authContainer.innerHTML = '';
+                        const profileDiv = document.createElement('div');
+                        profileDiv.style = 'display: flex; align-items: center; gap: 10px; color: #fff; font-family: "Poppins"; font-size: 0.9rem; background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px;';
+                        const initials = currentUser.name.charAt(0).toUpperCase();
+                        profileDiv.innerHTML = `<div style="width: 25px; height: 25px; border-radius: 50%; background: #ff4757; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">${initials}</div><span>${currentUser.name}</span> <a href="#" id="logoutBtnNav" style="color:#ff4757; margin-left:10px; text-decoration:none;"><i class="fas fa-sign-out-alt"></i></a>`;
+                        authContainer.appendChild(profileDiv);
+
+                        document.getElementById('logoutBtnNav').addEventListener('click', (e) => {
+                            e.preventDefault();
+                            localStorage.removeItem('auth_token');
+                            window.location.reload();
+                        });
+                    }
+                    await fetchWishlist();
+                } else {
+                    if (authContainer) {
+                        authContainer.innerHTML = '';
+                        const signInBtn = document.createElement('a');
+                        signInBtn.href = 'index.html';
+                        signInBtn.textContent = 'Login to View Wishlist';
+                        signInBtn.className = 'nav-cta';
+                        signInBtn.style = 'background: #fff; color: #1a2a6c; border:none; cursor: pointer; padding: 0.6rem 1.2rem; border-radius: 6px; font-weight:600; text-decoration: none;';
+                        authContainer.appendChild(signInBtn);
+                    }
+                    wishlistContainer.innerHTML = `<p style="text-align:center; font-family:'Poppins'">Please <a href="index.html" style="color: #ff4757; text-decoration: underline;">Login</a> to view your wishlist.</p>`;
+                }
+            };
+
+            updateUI();
+
+            async function fetchWishlist() {
+                const token = window.getAuthToken();
+                if (!token) return;
+
+                try {
+                    const res = await fetch('/api/users/wishlist', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    const data = await res.json();
+
+                    if (res.ok) {
+                        wishlistContainer.innerHTML = '';
+                        if (data.wishlist.length === 0) {
+                            wishlistContainer.innerHTML = '<p style="text-align:center; font-family:\'Poppins\';">Your wishlist is empty. <br><br> <a href="index.html#products" class="btn btn-primary" style="display:inline-block;">Explore Products</a></p>';
+                        } else {
+                            data.wishlist.forEach(product => {
+                                const div = document.createElement('div');
+                                div.style.display = 'flex';
+                                div.style.alignItems = 'center';
+                                div.style.justifyContent = 'space-between';
+                                div.style.padding = '15px';
+                                div.style.background = '#fff';
+                                div.style.borderRadius = '8px';
+                                div.style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
+
+                                div.innerHTML = `
+                                    <div style="display:flex; align-items:center; gap:20px;">
+                                        <img src="${product.image_url}" alt="${product.title}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                                        <div>
+                                            <h3 style="margin:0; font-family:'Poppins', sans-serif; font-size: 1.2rem; color: #333;">${product.title}</h3>
+                                            <p style="margin:5px 0 0; color: #ef4444; font-weight: bold; font-size: 1.1rem;">₹${product.discount_price} <span style="text-decoration: line-through; color: #999; font-size: 0.9rem; margin-left: 5px;">₹${product.original_price}</span></p>
+                                        </div>
+                                    </div>
+                                    <div style="display:flex; gap: 10px; align-items: center;">
+                                        <button class="btn-order" data-product="${product.title}" data-price="${product.discount_price}" style="background: #25D366; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold;">
+                                            <i class="fab fa-whatsapp"></i> Order
+                                        </button>
+                                        <button class="remove-wishlist-btn" data-id="${product.id}" style="background: #fff; border: 1px solid #ff4757; color: #ff4757; width: 40px; height: 40px; border-radius: 6px; cursor: pointer; display:flex; align-items:center; justify-content:center; transition: all 0.2s;">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                `;
+                                wishlistContainer.appendChild(div);
+                            });
+
+                            // Attach remove listeners
+                            document.querySelectorAll('.remove-wishlist-btn').forEach(btn => {
+                                btn.addEventListener('click', async (e) => {
+                                    const id = btn.getAttribute('data-id');
+                                    const resDel = await fetch(`/api/users/wishlist/${id}`, {
+                                        method: 'DELETE',
+                                        headers: { 'Authorization': `Bearer ${token}` }
+                                    });
+                                    if (resDel.ok) {
+                                        fetchWishlist(); // reload list
+                                    }
+                                });
+                            });
+
+                            // Attach order listeners
+                            document.querySelectorAll('.btn-order').forEach(btn => {
+                                btn.addEventListener('click', (e) => {
+                                    const productName = btn.getAttribute('data-product');
+                                    const productPrice = btn.getAttribute('data-price');
+                                    const message = `Hi Atharv Graphics, I am interested in ordering the ${productName} at the special price of ₹${productPrice}. Can you please help me with the design?`;
+                                    window.open(`https://wa.me/917058445094?text=${encodeURIComponent(message)}`, '_blank');
+                                });
+                            });
+                        }
+                    } else {
+                        wishlistContainer.innerHTML = `<p style="text-align:center; color:red;">Error: ${data.error || 'Unknown error'}</p>`;
+                    }
+                } catch (err) {
+                    console.error(err);
+                    wishlistContainer.innerHTML = `<p style="text-align:center; color:red;">Network Error: Failed to load wishlist.</p>`;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

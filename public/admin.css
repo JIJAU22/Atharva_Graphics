@@ -1,0 +1,187 @@
+/* admin.css - Styles for admin login modal and admin interface */
+
+/* Modal backdrop */
+.admin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Modal container */
+.admin-modal {
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 16px;
+  max-width: 450px;
+  width: 90%;
+  margin: auto;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05);
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.admin-modal .close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 1.5rem;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.admin-modal .close:hover {
+  color: #ef4444;
+}
+
+.admin-modal h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-family: 'Poppins', sans-serif;
+  color: #1e293b;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.admin-modal label {
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.admin-modal input,
+.admin-modal select,
+.admin-modal textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.8rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: #334155;
+  transition: all 0.2s ease;
+  background-color: #f8fafc;
+  box-sizing: border-box;
+}
+
+.admin-modal input:focus,
+.admin-modal select:focus,
+.admin-modal textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.admin-modal input::placeholder,
+.admin-modal textarea::placeholder {
+  color: #94a3b8;
+}
+
+.admin-modal input[type="file"] {
+  padding: 0.75rem;
+  background: #f1f5f9;
+  border: 1.5px dashed #cbd5e1;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+.admin-modal input[type="file"]:hover {
+  border-color: #94a3b8;
+}
+
+.admin-modal button,
+.admin-modal button[type="submit"] {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.875rem 1.2rem;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.admin-modal button:hover,
+.admin-modal button[type="submit"]:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+}
+
+.admin-modal button:active,
+.admin-modal button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* Simple admin toolbar after login */
+#adminToolbar {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: #111;
+  color: #fff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  display: none;
+  z-index: 9999;
+  align-items: center;
+  gap: 15px;
+}
+
+#adminToolbar span {
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 1px;
+}
+
+#adminToolbar button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+#adminToolbar button:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+}
+
+#adminToolbar #logoutBtn {
+  background: #dc3545;
+}
+
+#adminToolbar #logoutBtn:hover {
+  background: #bd2130;
+}
