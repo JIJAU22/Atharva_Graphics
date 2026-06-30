@@ -8,6 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const addProductModalClose = document.getElementById('addProductModalClose');
   const addProductForm = document.getElementById('addProductForm');
 
+  // Add Gallery Photo Modal
+  const addGalleryPhotoModal = document.getElementById('addGalleryPhotoModal');
+  const addGalleryPhotoBtn = document.getElementById('addGalleryPhotoBtn');
+  const addGalleryPhotoModalClose = document.getElementById('addGalleryPhotoModalClose');
+  const addGalleryPhotoForm = document.getElementById('addGalleryPhotoForm');
+
   // Edit Product Modal
   const editProductModal = document.getElementById('editProductModal');
   const editProductModalClose = document.getElementById('editProductModalClose');
@@ -25,6 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const openAdminInsightsBtn = document.getElementById('openAdminInsightsBtn');
   const adminInsightsModalClose = document.getElementById('adminInsightsModalClose');
   const insightsTableBody = document.getElementById('insightsTableBody');
+
+  // Admin Orders Modal
+  const adminOrdersModal = document.getElementById('adminOrdersModal');
+  const openAdminOrdersBtn = document.getElementById('openAdminOrdersBtn');
+  const adminOrdersModalClose = document.getElementById('adminOrdersModalClose');
+  const ordersTableBody = document.getElementById('ordersTableBody');
 
   // --- Admin Check via Clerk ---
   const checkAdminStatus = async () => {
@@ -46,11 +58,13 @@ document.addEventListener('DOMContentLoaded', () => {
         window.isAdminUser = true;
         if (window.renderProfileDropdown) window.renderProfileDropdown();
         if (window.loadProducts) window.loadProducts();
+        if (window.loadGallery) window.loadGallery();
       } else {
         if (adminControlsContainer) adminControlsContainer.style.display = 'none';
         window.isAdminUser = false;
         if (window.renderProfileDropdown) window.renderProfileDropdown();
         if (window.loadProducts) window.loadProducts();
+        if (window.loadGallery) window.loadGallery();
       }
     } catch (err) {
       console.error('Error checking admin status', err);
@@ -88,7 +102,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === editProductModal) editProductModal.style.display = 'none';
     if (e.target === adminBannerModal) adminBannerModal.style.display = 'none';
     if (e.target === adminInsightsModal) adminInsightsModal.style.display = 'none';
+    if (e.target === addGalleryPhotoModal) addGalleryPhotoModal.style.display = 'none';
   });
+
+  // --- Add Gallery Photo Modal Logic ---
+  if (addGalleryPhotoBtn) {
+    addGalleryPhotoBtn.addEventListener('click', () => {
+      addGalleryPhotoModal.style.display = 'flex';
+    });
+  }
+
+  if (addGalleryPhotoModalClose) {
+    addGalleryPhotoModalClose.addEventListener('click', () => {
+      addGalleryPhotoModal.style.display = 'none';
+    });
+  }
 
   // --- Banner Manager Logic ---
   if (openAdminBannerBtn) {
@@ -189,6 +217,102 @@ document.addEventListener('DOMContentLoaded', () => {
       adminInsightsModal.style.display = 'none';
     });
   }
+
+  // --- Admin Orders Logic ---
+  if (openAdminOrdersBtn) {
+    openAdminOrdersBtn.addEventListener('click', async () => {
+      adminOrdersModal.style.display = 'flex';
+      ordersTableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading orders...</td></tr>';
+      
+      const token = window.getAuthToken();
+      if (!token) return;
+
+      try {
+        const res = await fetch('/api/admin/orders', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          ordersTableBody.innerHTML = '';
+          if (data.orders.length === 0) {
+            ordersTableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No orders found.</td></tr>';
+            return;
+          }
+          data.orders.forEach(order => {
+            const tr = document.createElement('tr');
+            tr.style.borderBottom = '1px solid #eee';
+            tr.innerHTML = `
+              <td style="padding: 10px;">#${order.id}</td>
+              <td style="padding: 10px;">
+                <strong>${order.customer_name}</strong><br>
+                <a href="https://wa.me/${order.customer_phone}" target="_blank">${order.customer_phone}</a>
+              </td>
+              <td style="padding: 10px;">
+                ${order.product_title ? order.product_title : (order.design_type || 'Custom Design')}
+                ${order.size ? '<br>Size: ' + order.size : ''}
+              </td>
+              <td style="padding: 10px; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${order.requirements || ''}">
+                Qty: ${order.quantity}<br>
+                Reqs: ${order.requirements || 'None'}
+              </td>
+              <td style="padding: 10px;">
+                ${order.reference_image_url ? `<a href="${order.reference_image_url}" target="_blank" style="color:blue;text-decoration:underline;">View Image</a>` : 'No Image'}
+              </td>
+              <td style="padding: 10px;">
+                <span style="padding: 3px 6px; border-radius: 4px; font-size: 0.8rem; background: ${order.status === 'pending' ? '#fff3cd' : (order.status === 'completed' ? '#d4edda' : '#f8d7da')}; color: ${order.status === 'pending' ? '#856404' : (order.status === 'completed' ? '#155724' : '#721c24')};">
+                  ${order.status}
+                </span>
+              </td>
+              <td style="padding: 10px;">
+                <select onchange="updateOrderStatus(${order.id}, this.value)" style="padding: 4px;">
+                  <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                  <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Completed</option>
+                  <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                </select>
+              </td>
+            `;
+            ordersTableBody.appendChild(tr);
+          });
+        } else {
+          ordersTableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Failed to load orders. Make sure the server is restarted!</td></tr>';
+        }
+      } catch (err) {
+        console.error(err);
+        ordersTableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Error loading orders.</td></tr>';
+      }
+    });
+  }
+
+  if (adminOrdersModalClose) {
+    adminOrdersModalClose.addEventListener('click', () => {
+      adminOrdersModal.style.display = 'none';
+    });
+  }
+
+  window.updateOrderStatus = async function(orderId, status) {
+    const token = window.getAuthToken();
+    if (!token) return;
+    try {
+      const res = await fetch(`/api/admin/orders/${orderId}/status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status })
+      });
+      if (res.ok) {
+        if(window.showNotification) window.showNotification('Order status updated', 'success');
+        // Refresh orders
+        if (openAdminOrdersBtn) openAdminOrdersBtn.click();
+      } else {
+        if(window.showNotification) window.showNotification('Failed to update status', 'error');
+      }
+    } catch (err) {
+      console.error(err);
+      if(window.showNotification) window.showNotification('Error updating status', 'error');
+    }
+  };
 
   // Handle Add Product Submission
   if (addProductForm) {
@@ -318,6 +442,66 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (err) {
         console.error(err);
         if(window.showNotification) window.showNotification('Error updating product.', 'error');
+      } finally {
+        if (submitBtn) {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+      }
+    });
+  }
+
+  // Handle Add Gallery Photo Submission
+  if (addGalleryPhotoForm) {
+    addGalleryPhotoForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = addGalleryPhotoForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.innerHTML : 'Upload Photo';
+      if (submitBtn) {
+          submitBtn.innerHTML = 'Uploading... <i class="fas fa-spinner fa-spin"></i>';
+          submitBtn.disabled = true;
+      }
+
+      const title = document.getElementById('galTitle').value;
+      const imageFile = document.getElementById('galImage').files[0];
+
+      const formData = new FormData();
+      formData.append('title', title);
+      if (imageFile) {
+        formData.append('image', imageFile);
+      }
+
+      const token = window.getAuthToken();
+      if (!token) {
+        if(window.showNotification) window.showNotification('Please login as Admin first.', 'error');
+        if (submitBtn) {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/admin/gallery', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: formData
+        });
+        const data = await res.json();
+        if (res.ok) {
+          if(window.showNotification) window.showNotification('Photo added to gallery successfully!', 'success');
+          addGalleryPhotoForm.reset();
+          addGalleryPhotoModal.style.display = 'none';
+          if (window.loadGallery) window.loadGallery();
+        } else {
+          if(window.showNotification) window.showNotification('Failed to add photo: ' + (data.error || data.message), 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        if(window.showNotification) window.showNotification('Error adding photo.', 'error');
       } finally {
         if (submitBtn) {
             submitBtn.innerHTML = originalText;

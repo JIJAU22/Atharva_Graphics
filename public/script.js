@@ -177,19 +177,121 @@ document.addEventListener('DOMContentLoaded', () => {
         animationObserver.observe(section);
     });
 
-    // ==================== GALLERY LIGHTBOX ====================
+    // ==================== GALLERY LIGHTBOX & DYNAMIC LOADING ====================
     let currentImageIndex = 0;
-    const galleryImages = [];
+    let galleryImages = [];
 
-    galleryItems.forEach((item, index) => {
-        const img = item.querySelector('img');
-        galleryImages.push(img.src);
+    async function deleteGalleryPhoto(imageId) {
+        try {
+            const token = window.getAuthToken();
+            await fetch(`/api/admin/gallery/${imageId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
-        item.addEventListener('click', () => {
-            currentImageIndex = index;
-            openLightbox(img.src, img.alt);
+    function showUndoToast(message, onUndo) {
+        let toast = document.getElementById('undo-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'undo-toast';
+            toast.className = 'undo-toast';
+            document.body.appendChild(toast);
+        }
+        
+        toast.innerHTML = `
+            <span>${message}</span>
+            <button id="undo-btn" class="undo-btn" style="background:none; border:none; color: #fbc02d; font-weight:bold; cursor:pointer; margin-left:15px; font-size:14px;">UNDO</button>
+        `;
+        toast.classList.add('show');
+        
+        const undoBtn = document.getElementById('undo-btn');
+        let isUndone = false;
+        
+        undoBtn.addEventListener('click', () => {
+            isUndone = true;
+            toast.classList.remove('show');
+            if (onUndo) onUndo();
         });
-    });
+        
+        setTimeout(() => {
+            if (!isUndone) {
+                toast.classList.remove('show');
+            }
+        }, 5000);
+    }
+
+    async function loadGallery() {
+        try {
+            const isGalleryPage = window.location.pathname.includes('gallery.html');
+            const url = isGalleryPage ? '/api/gallery' : '/api/gallery?limit=6';
+            const res = await fetch(url);
+            const data = await res.json();
+            const gallery = data.gallery || [];
+            const galleryGrid = document.getElementById('galleryGrid');
+            if (!galleryGrid) return;
+
+            galleryGrid.innerHTML = '';
+            galleryImages = [];
+
+            const isAdmin = window.isAdminUser === true;
+
+            gallery.forEach((item, index) => {
+                galleryImages.push(item.image_url);
+
+                const div = document.createElement('div');
+                div.className = 'gallery-item animated';
+                div.style.opacity = '1';
+                div.style.transform = 'none';
+                div.style.visibility = 'visible';
+                div.innerHTML = `
+                    <img src="${item.image_url}" alt="${item.title}" loading="lazy">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                        <span>${item.title}</span>
+                    </div>
+                    ${isAdmin ? `<button class="delete-gallery-btn" data-id="${item.id}" style="position: absolute; top: 10px; right: 10px; z-index: 20; background: #ef4444; color: white; border: none; border-radius: 4px; padding: 5px 10px; cursor: pointer;"><i class="fas fa-trash"></i></button>` : ''}
+                `;
+                
+                div.querySelector('.gallery-overlay').addEventListener('click', () => {
+                    currentImageIndex = index;
+                    openLightbox(item.image_url, item.title);
+                });
+
+                galleryGrid.appendChild(div);
+            });
+
+            if (isAdmin) {
+                document.querySelectorAll('.delete-gallery-btn').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        e.stopPropagation();
+                        const galleryItem = btn.closest('.gallery-item');
+                        const imageId = btn.getAttribute('data-id');
+                        
+                        // Hide it temporarily
+                        galleryItem.style.display = 'none';
+                        
+                        showUndoToast('Photo deleted.', () => {
+                            clearTimeout(galleryItem.deleteTimer);
+                            galleryItem.style.display = 'block';
+                        });
+
+                        galleryItem.deleteTimer = setTimeout(() => {
+                            deleteGalleryPhoto(imageId);
+                        }, 5000);
+                    });
+                });
+            }
+
+        } catch (err) {
+            console.error('Failed to load gallery', err);
+        }
+    }
+    window.loadGallery = loadGallery;
+    loadGallery();
 
     function openLightbox(src, alt) {
         lightboxImage.src = src;
@@ -250,33 +352,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Basic validation
         if (!name || !mobile || !message) {
-            showFormNotification('Please fill in all required fields.', 'error');
+            if(window.showNotification) window.showNotification('Please fill in all required fields.', 'error');
             return;
         }
 
-        // Validate mobile number (Indian format)
-        const mobileRegex = /^[6-9]\d{9}$/;
-        if (!mobileRegex.test(mobile.replace(/[\s-+]/g, '').replace('91', ''))) {
-            showFormNotification('Please enter a valid mobile number.', 'error');
+        // Validate mobile number (Indian format roughly)
+        const mobileRegex = /^[0-9]{10,12}$/;
+        if (!mobileRegex.test(mobile.replace(/[\s-+]/g, ''))) {
+            if(window.showNotification) window.showNotification('Please enter a valid mobile number.', 'error');
             return;
         }
 
         // Validate email if provided
         if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            showFormNotification('Please enter a valid email address.', 'error');
+            if(window.showNotification) window.showNotification('Please enter a valid email address.', 'error');
             return;
         }
 
         // Build WhatsApp message
-        let waMessage = `Hi, I'm ${name}.%0A`;
-        waMessage += `Mobile: ${mobile}%0A`;
-        if (email) waMessage += `Email: ${email}%0A`;
-        waMessage += `%0AMessage: ${message}`;
+        let waMessage = `Hi, I'm ${name}.\n`;
+        waMessage += `Mobile: ${mobile}\n`;
+        if (email) waMessage += `Email: ${email}\n`;
+        waMessage += `\nMessage: ${message}`;
 
-        // Open WhatsApp with the message
-        window.open(`https://wa.me/917058445094?text=${waMessage}`, '_blank');
+        // Encode and open WhatsApp
+        const encodedMessage = encodeURIComponent(waMessage);
+        window.open(`https://wa.me/917058445094?text=${encodedMessage}`, '_blank');
 
-        if(window.showNotification) window.showNotification('Message sent via WhatsApp! We will get back to you soon.', 'success');
+        if(window.showNotification) window.showNotification('Message prepared! Please send it on WhatsApp.', 'success');
         contactForm.reset();
     });
     }
@@ -331,18 +434,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (res.ok) {
                         const data = await res.json();
-                        uploadedImageUrl = window.location.origin + '/' + data.url;
+                        uploadedImageUrl = data.url;
                     }
                 }
                 
-                let waMessage = `*Custom Design Request*%0A`;
-                waMessage += `Name: ${name}%0A`;
-                waMessage += `Details: ${details}%0A`;
+                let waMessage = `*Custom Design Request*\n`;
+                waMessage += `Name: ${name}\n`;
+                waMessage += `Details: ${details}\n`;
                 if (uploadedImageUrl) {
-                    waMessage += `Image: ${uploadedImageUrl}%0A`;
+                    waMessage += `Image: ${uploadedImageUrl}\n`;
                 }
 
-                window.open(`https://wa.me/917058445094?text=${waMessage}`, '_blank');
+                const encodedMessage = encodeURIComponent(waMessage);
+                window.open(`https://wa.me/917058445094?text=${encodedMessage}`, '_blank');
                 customDesignModal.style.display = 'none';
                 customDesignForm.reset();
                 if(window.showNotification) window.showNotification('Request prepared! Please send the WhatsApp message.', 'success');
@@ -918,21 +1022,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 const size = document.getElementById('smartOrderSize').value.trim();
                 const reqs = document.getElementById('smartOrderReqs').value.trim();
 
-                let waMessage = `*New Order: ${pTitle}*%0A`;
-                waMessage += `Price: ₹${pPrice}%0A`;
-                waMessage += `------------------------%0A`;
-                waMessage += `Name: ${name}%0A`;
-                waMessage += `Phone: ${phone}%0A`;
-                waMessage += `Design Type: ${design}%0A`;
-                waMessage += `Quantity: ${qty}%0A`;
-                if(size) waMessage += `Size: ${size}%0A`;
-                waMessage += `Requirements: ${reqs}%0A`;
+                let waMessage = `*New Order: ${pTitle}*\n`;
+                waMessage += `Price: ₹${pPrice}\n`;
+                waMessage += `------------------------\n`;
+                waMessage += `Name: ${name}\n`;
+                waMessage += `Phone: ${phone}\n`;
+                waMessage += `Design Type: ${design}\n`;
+                waMessage += `Quantity: ${qty}\n`;
+                if(size) waMessage += `Size: ${size}\n`;
+                waMessage += `Requirements: ${reqs}\n`;
                 if (imageUrl) {
-                    waMessage += `Ref Image: ${imageUrl}%0A`;
+                    waMessage += `Ref Image: ${imageUrl}\n`;
                 }
 
                 const whatsappPhone = '917058445094';
-                window.open(`https://wa.me/${whatsappPhone}?text=${waMessage}`, '_blank');
+                const encodedMessage = encodeURIComponent(waMessage);
+                window.open(`https://wa.me/${whatsappPhone}?text=${encodedMessage}`, '_blank');
                 
                 smartOrderModal.style.display = 'none';
                 smartOrderForm.reset();

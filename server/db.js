@@ -39,6 +39,16 @@ async function initDB() {
       )
     `);
 
+    // Create Gallery Table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS gallery_images (
+        id SERIAL PRIMARY KEY,
+        title TEXT NOT NULL,
+        image_url TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
     // Create Users Table
     await client.query(`
       CREATE TABLE IF NOT EXISTS users (
@@ -96,6 +106,27 @@ async function initDB() {
         );
       }
       console.log('Database seeded with initial products.');
+    }
+
+    // Seed gallery if empty
+    const galRes = await client.query('SELECT count(*) as count FROM gallery_images');
+    if (parseInt(galRes.rows[0].count) === 0) {
+      const seedGallery = [
+        { title: 'Flex Banner', image_url: 'assets/images/gallery-flex-banner.png' },
+        { title: 'Custom Mug', image_url: 'assets/images/gallery-custom-mug.png' },
+        { title: 'T-Shirt Print', image_url: 'assets/images/gallery-tshirt.png' },
+        { title: 'Gift Items', image_url: 'assets/images/hero-products.png' },
+        { title: 'Our Studio', image_url: 'assets/images/about-shop.png' },
+        { title: 'Sample Products', image_url: 'assets/images/gallery-samples.png' }
+      ];
+
+      for (const g of seedGallery) {
+        await client.query(
+          'INSERT INTO gallery_images (title, image_url) VALUES ($1, $2)',
+          [g.title, g.image_url]
+        );
+      }
+      console.log('Database seeded with initial gallery images.');
     }
   } catch (err) {
     console.error('Error initializing database', err);

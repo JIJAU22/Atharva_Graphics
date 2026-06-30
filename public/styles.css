@@ -722,7 +722,30 @@ ul {
 /* ==================== WHY CHOOSE US ==================== */
 .why-choose {
     background: var(--gradient-gold);
-    padding: 40px 0;
+    padding: 1rem 0;
+}
+
+/* ==================== UNDO TOAST ==================== */
+.undo-toast {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 9999;
+    transition: bottom 0.3s ease;
+    font-family: var(--font-body);
+}
+
+.undo-toast.show {
+    bottom: 20px;
 }
 
 .why-choose-title {

@@ -224,6 +224,60 @@ app.delete('/api/admin/products/:id', requireAdmin(), async (req, res) => {
   }
 });
 
+// --- Gallery APIs ---
+app.get('/api/gallery', async (req, res) => {
+  try {
+    let query = 'SELECT * FROM gallery_images ORDER BY id DESC';
+    const params = [];
+    if (req.query.limit) {
+      query += ' LIMIT $1';
+      params.push(parseInt(req.query.limit, 10));
+    }
+    const { rows } = await db.query(query, params);
+    res.json({ gallery: rows });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/admin/gallery', requireAdmin(), upload.single('image'), async (req, res) => {
+  const { title } = req.body;
+  
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'Image is required' });
+    }
+
+    const fileName = `gal-${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(req.file.originalname)}`;
+    const { error } = await supabase.storage.from('products').upload(fileName, req.file.buffer, {
+      contentType: req.file.mimetype,
+      upsert: true
+    });
+    if (error) throw error;
+    
+    const { data: publicUrlData } = supabase.storage.from('products').getPublicUrl(fileName);
+    const image_url = publicUrlData.publicUrl;
+
+    const result = await db.query(
+      'INSERT INTO gallery_images (title, image_url) VALUES ($1, $2) RETURNING *',
+      [title || 'Gallery Image', image_url]
+    );
+    res.json({ success: true, image: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/admin/gallery/:id', requireAdmin(), async (req, res) => {
+  const id = req.params.id;
+  try {
+    const result = await db.query('DELETE FROM gallery_images WHERE id = $1', [id]);
+    res.json({ success: true, changes: result.rowCount });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // --- Wishlist APIs ---
 app.get('/api/users/wishlist', requireAuth(), async (req, res) => {
   const userId = req.auth.id;
@@ -307,25 +361,80 @@ app.get('/api/admin/insights/wishlists', requireAdmin(), async (req, res) => {
 });
 
 // --- Custom Design Upload API (Public) ---
-app.post('/api/custom-design/upload', upload.single('image'), (req, res) => {
+app.post('/api/custom-design/upload', upload.single('image'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No image provided' });
   }
-  // Cloudinary returns path in req.file.path
-  res.json({ success: true, url: req.file.path });
+  
+  try {
+    const fileName = `custom-${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(req.file.originalname)}`;
+    const { error } = await supabase.storage.from('products').upload(fileName, req.file.buffer, {
+      contentType: req.file.mimetype,
+      upsert: true
+    });
+    if (error) throw error;
+    
+    const { data: publicUrlData } = supabase.storage.from('products').getPublicUrl(fileName);
+    res.json({ success: true, url: publicUrlData.publicUrl });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to upload image' });
+  }
 });
 
 // --- Smart Order API ---
 app.post('/api/orders', upload.single('image'), async (req, res) => {
   const { product_id, customer_name, customer_phone, design_type, quantity, size, requirements } = req.body;
-  const reference_image_url = req.file ? req.file.path : null;
   
+  const finalProductId = product_id ? parseInt(product_id, 10) : null;
+  
+  let reference_image_url = null;
   try {
+    if (req.file) {
+      const fileName = `order-${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(req.file.originalname)}`;
+      const { error } = await supabase.storage.from('products').upload(fileName, req.file.buffer, {
+        contentType: req.file.mimetype,
+        upsert: true
+      });
+      if (error) throw error;
+      
+      const { data: publicUrlData } = supabase.storage.from('products').getPublicUrl(fileName);
+      reference_image_url = publicUrlData.publicUrl;
+    }
+
     const result = await db.query(
       `INSERT INTO orders (product_id, customer_name, customer_phone, design_type, quantity, size, requirements, reference_image_url) 
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-      [product_id, customer_name, customer_phone, design_type, quantity, size, requirements, reference_image_url]
+      [finalProductId, customer_name, customer_phone, design_type, quantity, size, requirements, reference_image_url]
     );
+    res.json({ success: true, order: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// --- Admin Orders APIs ---
+app.get('/api/admin/orders', requireAdmin(), async (req, res) => {
+  try {
+    const { rows } = await db.query(`
+      SELECT o.*, p.title as product_title 
+      FROM orders o 
+      LEFT JOIN products p ON o.product_id = p.id 
+      ORDER BY o.created_at DESC
+    `);
+    res.json({ orders: rows });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/api/admin/orders/:id/status', requireAdmin(), async (req, res) => {
+  const { status } = req.body;
+  try {
+    const result = await db.query(
+      'UPDATE orders SET status = $1 WHERE id = $2 RETURNING *',
+      [status, req.params.id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Order not found' });
     res.json({ success: true, order: result.rows[0] });
   } catch (err) {
     res.status(500).json({ error: err.message });
