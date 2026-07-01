@@ -77,6 +77,11 @@
     box-sizing: border-box;
 }
 
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
@@ -87,7 +92,6 @@ body {
     color: var(--text-dark);
     background: var(--white);
     line-height: 1.6;
-    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
