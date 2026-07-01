@@ -33,3 +33,5 @@ Requirements
 Upload Reference Images
 
 This ensures all details are collected at once.
+
+supabase pass = Atharva_graphics

@@ -1913,7 +1913,8 @@ ul {
         box-shadow: var(--shadow-xl);
         transition: var(--transition);
         z-index: 999;
-        gap: 4px;
+        gap: 12px;
+        overflow-y: auto;
     }
 
     .nav-links.active {
@@ -1921,7 +1922,7 @@ ul {
     }
 
     .nav-link {
-        font-size: 1rem;
+        font-size: 1.1rem;
         padding: 12px 16px;
         width: 100%;
         border-radius: var(--radius-sm);
@@ -1932,11 +1933,31 @@ ul {
     }
 
     .nav-cta {
-        display: none;
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        margin: 10px 0 0 0 !important;
+    }
+
+    .nav-action-item {
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
 
     .hamburger {
         display: flex;
+        z-index: 1000;
+    }
+
+    .hamburger.active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    .hamburger.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+    .hamburger.active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
     }
 
     .hero-container {
@@ -2068,11 +2089,21 @@ ul {
     }
 
     .section-title {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
     }
 
     .footer-tagline {
         font-size: 1.1rem;
+    }
+
+    /* Forms & Buttons - Mobile Enhancements */
+    input, select, textarea, .btn, .nav-cta, .submit-btn {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .contact-grid {
+        gap: 30px;
     }
 }
 
@@ -2294,9 +2325,19 @@ ul {
 }
 
 /* Admin Insights Table */
+#insightsTableContainer {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 20px;
+}
+
 #insightsTableContainer table {
     width: 100%;
+    min-width: 600px;
+    border-collapse: collapse;
 }
+
 #insightsTableContainer th {
     background: var(--light-gray);
     color: var(--navy-dark);
