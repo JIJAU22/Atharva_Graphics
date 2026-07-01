@@ -55,10 +55,10 @@
     --section-padding: 80px 0;
     --container-max: 1200px;
 
-    /* Transitions */
-    --transition-fast: 0.2s ease;
-    --transition: 0.3s ease;
-    --transition-slow: 0.5s ease;
+    /* Transitions (Performance Optimized) */
+    --transition-fast: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    --transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    --transition-slow: color 0.5s ease, background-color 0.5s ease, border-color 0.5s ease, opacity 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
 
     /* Border Radius */
     --radius-sm: 6px;
@@ -87,7 +87,7 @@ body {
     color: var(--text-dark);
     background: var(--white);
     line-height: 1.6;
-    overflow-x: hidden;
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -288,12 +288,33 @@ ul {
 .animate-on-scroll {
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
 }
 
 .animate-on-scroll.animated {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateZ(0); /* Hardware acceleration */
+}
+
+/* Base style for elements that will stagger when parent gets .animated */
+.service-card, .product-card, .gallery-item, .why-item, .contact-item, .catalog-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+    will-change: transform, opacity;
+}
+
+/* Stagger calculation using CSS Custom Properties assigned via JS */
+.animated .service-card, 
+.animated .product-card, 
+.animated .gallery-item, 
+.animated .why-item, 
+.animated .contact-item,
+.animated .catalog-card {
+    opacity: 1;
+    transform: translateZ(0);
+    transition-delay: calc(var(--stagger-index, 0) * 0.08s);
 }
 
 /* ==================== CAMPAIGN BAR ==================== */
@@ -310,7 +331,7 @@ ul {
     font-weight: 500;
     font-size: 0.95rem;
     overflow: hidden;
-    transition: all 0.4s ease;
+    transition: var(--transition);
     border-bottom: 2px solid var(--gold);
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     letter-spacing: 0.5px;
@@ -1036,8 +1057,12 @@ ul {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin-bottom: 40px;
+    margin-bottom: 5px;
     flex-wrap: wrap;
+}
+
+.sub-product-filters {
+    margin-bottom: 40px;
 }
 
 .filter-btn {
@@ -1050,7 +1075,7 @@ ul {
     font-weight: 600;
     font-size: 0.85rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition);
 }
 
 .filter-btn:hover,
@@ -1185,7 +1210,7 @@ ul {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     cursor: pointer;
     margin-top: auto;
     text-decoration: none;
@@ -2096,7 +2121,7 @@ ul {
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
-    transition: all 0.3s ease;
+    transition: var(--transition);
 }
 
 .profile-dropdown.active {
@@ -2309,3 +2334,162 @@ ul {
     from { transform: translateX(-50%) translateY(100%); opacity: 0; }
     to { transform: translateX(-50%) translateY(0); opacity: 1; }
 }
+
+/* ==========================================================================
+   DYNAMIC SERVICES ACCORDION STYLES
+   ========================================================================== */
+.services-accordion-container {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.accordion-item {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: var(--transition);
+    border: 1px solid #f0f0f0;
+}
+
+.accordion-item:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.accordion-header {
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    background: #fff;
+    user-select: none;
+    transition: background 0.3s ease;
+}
+
+.accordion-header h4 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #1a2a6c;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+.accordion-header .icon {
+    font-size: 1.2rem;
+    color: #ff4757;
+    transition: transform 0.4s ease;
+}
+
+.accordion-item.active .accordion-header .icon {
+    transform: rotate(180deg);
+}
+
+.accordion-item.active .accordion-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.accordion-content {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, padding 0.5s ease-in-out;
+    background: #fafafa;
+}
+
+.accordion-item.active .accordion-content {
+    max-height: 2000px;
+    opacity: 1;
+    padding: 20px 25px;
+}
+
+.accordion-sub-item {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #e0e0e0;
+}
+
+.accordion-sub-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.accordion-sub-item h5 {
+    margin: 0 0 5px 0;
+    font-size: 1.05rem;
+    color: #333;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.accordion-sub-item h5 i {
+    color: #ff4757;
+    font-size: 0.85rem;
+}
+
+.accordion-sub-item p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   CATALOG PAGE STYLES (services.html)
+   ========================================================================== */
+.catalog-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: #555;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: var(--transition);
+    font-family: 'Inter', sans-serif;
+}
+.catalog-nav-link:hover {
+    background: #f8f9fa;
+    color: #ff4757;
+    padding-left: 20px;
+}
+.catalog-nav-link.active {
+    background: #ff4757;
+    color: white;
+}
+.catalog-nav-link.active i {
+    color: white !important;
+}
+
+.catalog-card {
+    background: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+.catalog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border-color: #ffb8b8;
+}
+
+@keyframes fadeInUpSmooth {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+

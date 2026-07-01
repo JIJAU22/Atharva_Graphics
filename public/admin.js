@@ -1,4 +1,14 @@
 // admin.js
+
+const subCategoriesMap = {
+  flex: ['All', 'Regular Flex', 'Star Flex', 'Backlit Flex', 'Frontlit Flex'],
+  paper: ['All', 'Business Cards', 'Letterheads', 'Flyers'],
+  vinyl: ['All', 'Glossy Vinyl', 'Matte Vinyl', 'Transparent Vinyl'],
+  sublimation: ['All', 'Mugs', 'Polyester Apparel', 'Keychains', 'Photo Frames', 'Cushions', 'Sipper Bottles'],
+  dtf: ['All', 'Cotton T-Shirts', 'Caps', 'Tote Bags'],
+  all: ['All']
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const adminControlsContainer = document.getElementById('adminControlsContainer');
   
@@ -78,9 +88,31 @@ document.addEventListener('DOMContentLoaded', () => {
   checkAdminStatus();
 
   // --- Add Product Modal Logic ---
+  const prodCategory = document.getElementById('prodCategory');
+  const prodSubCategory = document.getElementById('prodSubCategory');
+  const editProdCategory = document.getElementById('editProdCategory');
+  const editProdSubCategory = document.getElementById('editProdSubCategory');
+
+  function populateSubCategories(categorySelect, subCategorySelect) {
+    if (!categorySelect || !subCategorySelect) return;
+    const category = categorySelect.value;
+    const subs = subCategoriesMap[category] || ['All'];
+    subCategorySelect.innerHTML = subs.map(sub => `<option value="${sub}">${sub}</option>`).join('');
+  }
+
+  if (prodCategory && prodSubCategory) {
+    prodCategory.addEventListener('change', () => populateSubCategories(prodCategory, prodSubCategory));
+    // Initial population
+    populateSubCategories(prodCategory, prodSubCategory);
+  }
+  if (editProdCategory && editProdSubCategory) {
+    editProdCategory.addEventListener('change', () => populateSubCategories(editProdCategory, editProdSubCategory));
+  }
+
   if (addProductBtn) {
     addProductBtn.addEventListener('click', () => {
       addProductModal.style.display = 'flex';
+      if (prodCategory && prodSubCategory) populateSubCategories(prodCategory, prodSubCategory);
     });
   }
 
@@ -328,6 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const title = document.getElementById('prodTitle').value;
       const category = document.getElementById('prodCategory').value;
+      const subCategory = document.getElementById('prodSubCategory').value;
       const originalPrice = document.getElementById('prodOriginalPrice').value;
       const discountPrice = document.getElementById('prodDiscountPrice').value;
       const rating = document.getElementById('prodRating').value;
@@ -336,6 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('category', category);
+      formData.append('sub_category', subCategory);
       formData.append('original_price', originalPrice);
       formData.append('discount_price', discountPrice);
       formData.append('rating', rating);
@@ -397,6 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const id = document.getElementById('editProdId').value;
       const title = document.getElementById('editProdTitle').value;
       const category = document.getElementById('editProdCategory').value;
+      const subCategory = document.getElementById('editProdSubCategory').value;
       const originalPrice = document.getElementById('editProdOriginalPrice').value;
       const discountPrice = document.getElementById('editProdDiscountPrice').value;
       const rating = document.getElementById('editProdRating').value;
@@ -405,6 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('category', category);
+      formData.append('sub_category', subCategory);
       formData.append('original_price', originalPrice);
       formData.append('discount_price', discountPrice);
       formData.append('rating', rating);

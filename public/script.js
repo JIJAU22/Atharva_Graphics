@@ -153,18 +153,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('animated');
 
-                // Add staggered delay for grid children
-                const children = entry.target.querySelectorAll('.service-card, .product-card, .gallery-item, .why-item, .contact-item');
+                // Assign stagger index as a CSS variable for smooth CSS-only staggers
+                const children = entry.target.querySelectorAll('.service-card, .product-card, .gallery-item, .why-item, .contact-item, .catalog-card');
                 children.forEach((child, index) => {
-                    child.style.transitionDelay = `${index * 0.1}s`;
-                    child.style.opacity = '0';
-                    child.style.transform = 'translateY(20px)';
-
-                    setTimeout(() => {
-                        child.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                        child.style.opacity = '1';
-                        child.style.transform = 'translateY(0)';
-                    }, index * 100);
+                    child.style.setProperty('--stagger-index', index);
                 });
 
                 animationObserver.unobserve(entry.target);
@@ -243,10 +235,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 galleryImages.push(item.image_url);
 
                 const div = document.createElement('div');
-                div.className = 'gallery-item animated';
-                div.style.opacity = '1';
-                div.style.transform = 'none';
-                div.style.visibility = 'visible';
+                div.className = 'gallery-item';
+                div.style.setProperty('--stagger-index', index);
                 div.innerHTML = `
                     <img src="${item.image_url}" alt="${item.title}" loading="lazy">
                     <div class="gallery-overlay">
@@ -582,6 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const productSearch = document.getElementById('productSearch');
     const productSort = document.getElementById('productSort');
     let currentCategoryFilter = 'all';
+    let currentSubCategoryFilter = 'All';
     let allProducts = [];
     let userWishlist = [];
     const isProductsPage = window.location.pathname.endsWith('products.html');
@@ -600,6 +591,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Apply Category Filter
         if (currentCategoryFilter !== 'all') {
             filtered = filtered.filter(p => p.category === currentCategoryFilter);
+        }
+
+        // Apply Sub-Category Filter
+        if (currentSubCategoryFilter !== 'All') {
+            filtered = filtered.filter(p => p.sub_category === currentSubCategoryFilter);
         }
 
         // Apply Sort
@@ -659,7 +655,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const productsToShow = products.slice(0, visibleProductsCount);
 
-        productsToShow.forEach(product => {
+        productsToShow.forEach((product, index) => {
             let discountPercent = 0;
             if (product.original_price > 0) {
                 discountPercent = Math.round(((product.original_price - product.discount_price) / product.original_price) * 100);
@@ -685,6 +681,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'product-card';
             card.setAttribute('data-category', product.category);
             card.style.position = 'relative';
+            card.style.setProperty('--stagger-index', index);
             card.innerHTML = `
                 <div class="product-badge">-${discountPercent}%</div>
                 <button class="wishlist-toggle-btn" data-id="${product.id}" data-wished="${isWished}" style="position: absolute; top: 10px; right: 10px; z-index: 10; background: #fff; border: none; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); color: ${heartColor}; font-size: 1.2rem; transition: transform 0.2s;">
@@ -947,14 +944,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ==================== PRODUCT FILTERS ====================
     const filterBtns = document.querySelectorAll('.filter-btn');
+    const subCategoryFiltersContainer = document.getElementById('subCategoryFilters');
+
+    // Duplicate map so script.js knows the options independently of admin.js
+    const scriptSubCategoriesMap = {
+        flex: ['All', 'Regular Flex', 'Star Flex', 'Backlit Flex', 'Frontlit Flex'],
+        paper: ['All', 'Business Cards', 'Letterheads', 'Flyers'],
+        vinyl: ['All', 'Glossy Vinyl', 'Matte Vinyl', 'Transparent Vinyl'],
+        sublimation: ['All', 'Mugs', 'Polyester Apparel', 'Keychains', 'Photo Frames', 'Cushions', 'Sipper Bottles'],
+        dtf: ['All', 'Cotton T-Shirts', 'Caps', 'Tote Bags'],
+        all: ['All']
+    };
+
+    function renderSubCategoryFilters(category) {
+        if (!subCategoryFiltersContainer) return;
+        subCategoryFiltersContainer.innerHTML = '';
+        
+        if (category === 'all') {
+            currentSubCategoryFilter = 'All';
+            return;
+        }
+
+        const subs = scriptSubCategoriesMap[category] || ['All'];
+        if (subs.length <= 1) return; // Don't show if there are no sub-categories besides 'All'
+
+        subs.forEach(sub => {
+            const btn = document.createElement('button');
+            btn.className = `filter-btn sub-filter-btn ${sub === currentSubCategoryFilter ? 'active' : ''}`;
+            btn.style.fontSize = '0.85rem';
+            btn.style.padding = '0.4rem 1rem';
+            btn.textContent = sub;
+            btn.addEventListener('click', () => {
+                // Remove active class from all sub-filters
+                document.querySelectorAll('.sub-filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentSubCategoryFilter = sub;
+                visibleProductsCount = isProductsPage ? 10000 : 8;
+                renderProducts(getFilteredAndSortedProducts());
+            });
+            subCategoryFiltersContainer.appendChild(btn);
+        });
+    }
+
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Remove active class from all
+            // Remove active class from all main filters
             filterBtns.forEach(b => b.classList.remove('active'));
             // Add active class to clicked
             btn.classList.add('active');
 
             currentCategoryFilter = btn.getAttribute('data-filter');
+            currentSubCategoryFilter = 'All'; // Reset sub-category on main category change
+            
+            renderSubCategoryFilters(currentCategoryFilter);
+            
             visibleProductsCount = isProductsPage ? 10000 : 8;
             renderProducts(getFilteredAndSortedProducts());
         });
@@ -1056,4 +1099,123 @@ document.addEventListener('DOMContentLoaded', () => {
     handleNavbarScroll();
     handleBackToTop();
     loadProducts();
+});
+
+// ==========================================================================
+// DYNAMIC SERVICES CATALOG (services.html)
+// ==========================================================================
+document.addEventListener('DOMContentLoaded', () => {
+    const servicesData = [
+        {
+            title: "Flex Printing",
+            icon: "fa-print",
+            items: [
+                { name: "Regular Flex", desc: "Standard quality for birthday banners, event backdrops, and small shop banners." },
+                { name: "Star Flex", desc: "Heavy-duty, high-quality gloss/matte flex for premium shop boards and large hoardings." },
+                { name: "Backlit Flex", desc: "Specially designed for glow-sign boards (lightboxes) with rear illumination." },
+                { name: "Frontlit Flex", desc: "Standard non-translucent flex designed for front-lighting setups." },
+                { name: "Hoardings & Promotional Banners", desc: "Large-scale outdoor advertising banners." }
+            ]
+        },
+        {
+            title: "Paper Printing",
+            icon: "fa-copy",
+            items: [
+                { name: "Business Cards / Visiting Cards", desc: "Available in Matte, Glossy, Velvet, Texture, or Spot UV finishes." },
+                { name: "Letterheads & Envelopes", desc: "Professional corporate stationery." },
+                { name: "Flyers, Leaflets & Pamphlets", desc: "Promotional hand-outs for local marketing." },
+                { name: "Brochures (Bi-fold / Tri-fold)", desc: "Detailed company profiles and product catalogs." },
+                { name: "Bill Books & Receipt Books", desc: "Customized GST, non-GST, and carbonless invoice books." },
+                { name: "Posters & Menu Cards", desc: "High-quality prints for hotels, cafes, events, and wall displays." },
+                { name: "Invitation Cards", desc: "Wedding cards, birthday invites, and inaugural event cards." }
+            ]
+        },
+        {
+            title: "Eco Vinyl Printing",
+            icon: "fa-leaf",
+            items: [
+                { name: "Vinyl Stickers & Product Labels", desc: "Die-cut or roll stickers for product packaging and branding." },
+                { name: "Sunboard Printing", desc: "Eco-vinyl mounted on 3mm/5mm foam boards for exhibitions and in-store displays." },
+                { name: "One-Way Vision", desc: "Perforated vinyl for shop glass fronts (visible advertisement from the outside, see-through from the inside)." },
+                { name: "Clear / Transparent Vinyl", desc: "See-through stickers ideal for glass doors, windows, and packaging." },
+                { name: "Wall Graphics & Custom Wallpaper", desc: "High-res prints for office interiors, cafes, and home decor." }
+            ]
+        },
+        {
+            title: "Sublimation Printing",
+            icon: "fa-mug-hot",
+            items: [
+                { name: "Mug Printing", desc: "White mugs, Magic/Color-changing mugs, Patch mugs, and Heart-handle mugs." },
+                { name: "Polyester Apparel", desc: "Sports jerseys, marathon t-shirts, and promotional event wear." },
+                { name: "Keychains & Mobile Covers", desc: "Personalized photo keychains and hard/soft phone cases." },
+                { name: "Custom Photo Frames & Plaques", desc: "Printed MDF wood, stone/rock slates, and metal sheets." },
+                { name: "Cushions & Pillows", desc: "Magic/Sequin cushions, LED cushions, and fur pillows." },
+                { name: "Sipper Bottles & Flasks", desc: "Printed aluminum/steel water bottles for gyms and corporate kits." }
+            ]
+        },
+        {
+            title: "DTF (Direct to Film) Printing",
+            icon: "fa-tshirt",
+            items: [
+                { name: "Cotton T-Shirts & Hoodies", desc: "High-quality customized streetwear, brand merchandise, and corporate uniforms." },
+                { name: "Caps & Hats", desc: "Embroidered-look multi-color prints on promotional and sports caps." },
+                { name: "Tote Bags & Canvas Bags", desc: "Eco-friendly customized shopping and promotional bags." },
+                { name: "Denim & Jackets", desc: "Heavy-duty fabric prints for custom fashion wear." },
+                { name: "DTF Prints Only (Roll / Sheet Supply)", desc: "Ready-to-heat-press DTF sticker sheets for other printers and garment manufacturers." }
+            ]
+        }
+    ];
+
+    const catalogNav = document.getElementById('catalog-nav');
+    const catalogDetails = document.getElementById('catalog-details');
+    
+    if (catalogNav && catalogDetails) {
+        // Initialize Sidebar Navigation
+        servicesData.forEach((category, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#" class="catalog-nav-link" data-index="${index}">
+                                <i class="fas ${category.icon}" style="width: 25px;"></i> ${category.title}
+                            </a>`;
+            catalogNav.appendChild(li);
+        });
+
+        const navLinks = document.querySelectorAll('.catalog-nav-link');
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Active State
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+
+                const idx = this.getAttribute('data-index');
+                const category = servicesData[idx];
+
+                // Render Content
+                catalogDetails.innerHTML = `
+                    <div style="animation: fadeInUpSmooth 0.5s cubic-bezier(0.16, 1, 0.3, 1);">
+                        <h2 style="font-size: 2rem; color: #1a2a6c; margin-bottom: 30px; border-bottom: 2px solid #f0f0f0; padding-bottom: 20px; display: flex; align-items: center; gap: 15px; font-family: 'Poppins', sans-serif;">
+                            <span style="background: #fff0f1; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas ${category.icon}" style="color: #ff4757; font-size: 1.4rem;"></i>
+                            </span>
+                            ${category.title}
+                        </h2>
+                        <div class="catalog-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                            ${category.items.map((subItem, subIdx) => `
+                                <div class="catalog-item">
+                                    <div class="catalog-card" style="animation: fadeInUpSmooth 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${subIdx * 0.08}s both;">
+                                        <h4 style="font-size: 1.15rem; color: #1a2a6c; margin: 0 0 12px 0; display: flex; align-items: flex-start; gap: 10px; font-family: 'Poppins', sans-serif; font-weight: 600;">
+                                            <i class="fas fa-check-circle" style="color: #ff4757; font-size: 1rem; margin-top: 4px;"></i> <span>${subItem.name}</span>
+                                        </h4>
+                                        <p style="margin: 0; color: #666; font-size: 0.95rem; line-height: 1.6;">${subItem.desc}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+        });
+    }
 });

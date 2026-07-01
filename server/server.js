@@ -152,7 +152,7 @@ app.get('/api/products', async (req, res) => {
 
 // POST new product (admin only)
 app.post('/api/admin/products', requireAdmin(), upload.single('image'), async (req, res) => {
-  const { title, category, original_price, discount_price, rating } = req.body;
+  const { title, category, sub_category, original_price, discount_price, rating } = req.body;
   
   try {
     let image_url = 'assets/AK_Products/ak_product_2.jpeg';
@@ -169,8 +169,8 @@ app.post('/api/admin/products', requireAdmin(), upload.single('image'), async (r
     }
 
     const result = await db.query(
-      'INSERT INTO products (title, category, original_price, discount_price, rating, image_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [title, category, original_price, discount_price, rating || 5.0, image_url]
+      'INSERT INTO products (title, category, sub_category, original_price, discount_price, rating, image_url) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+      [title, category, sub_category || 'All', original_price, discount_price, rating || 5.0, image_url]
     );
     productsCache = null; // Invalidate cache
     res.json({ success: true, product: result.rows[0] });
@@ -182,7 +182,7 @@ app.post('/api/admin/products', requireAdmin(), upload.single('image'), async (r
 // PUT update product (admin only)
 app.put('/api/admin/products/:id', requireAdmin(), upload.single('image'), async (req, res) => {
   const id = req.params.id;
-  const { title, category, original_price, discount_price, rating } = req.body;
+  const { title, category, sub_category, original_price, discount_price, rating } = req.body;
   
   try {
     const { rows } = await db.query('SELECT image_url FROM products WHERE id = $1', [id]);
@@ -202,8 +202,8 @@ app.put('/api/admin/products/:id', requireAdmin(), upload.single('image'), async
     }
 
     const result = await db.query(
-      'UPDATE products SET title = $1, category = $2, original_price = $3, discount_price = $4, rating = $5, image_url = $6 WHERE id = $7',
-      [title, category, original_price, discount_price, rating || 5.0, image_url, id]
+      'UPDATE products SET title = $1, category = $2, sub_category = $3, original_price = $4, discount_price = $5, rating = $6, image_url = $7 WHERE id = $8',
+      [title, category, sub_category || 'All', original_price, discount_price, rating || 5.0, image_url, id]
     );
     productsCache = null; // Invalidate cache
     res.json({ success: true, changes: result.rowCount });

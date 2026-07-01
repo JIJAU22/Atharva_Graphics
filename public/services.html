@@ -51,15 +51,13 @@
     <!-- ==================== NAVBAR ==================== -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="index.html#home" class="nav-logo">
+            <a href="index.html" class="nav-logo">
                 <img src="assets/images/ak-logo.png" alt="Atharv Graphics Logo" class="nav-logo-img">
             </a>
 
-            <ul class="nav-links" id="navLinks" style="margin: 0;">
-                <li><a href="index.html" class="nav-link" style="color:#111; font-weight: 600;"><i class="fas fa-arrow-left"></i> Back to Home</a></li>
+            <ul class="nav-links" id="navLinks" style="margin: 0 auto;">
+                <li><a href="index.html" class="nav-link" style="color: #1a2a6c; font-weight: 600;">Back to Home</a></li>
             </ul>
-
-            <a href="index.html#contact" class="nav-cta">Get a Quote</a>
             <!-- User Auth Buttons -->
             <div id="clerk-auth-container" style="margin-left:10px; display: flex; align-items: center; gap: 10px;">
             </div>
@@ -75,136 +73,42 @@
         </div>
     </nav>
 
-    <!-- ==================== PRODUCTS ==================== -->
-    <section class="products" id="products">
-        <div class="container">
-            <div class="section-header" style="position: relative;">
-                <h2 class="section-title">OUR PRODUCTS</h2>
-                <div class="title-decoration">
-                    <span class="star"><i class="fas fa-star"></i></span>
-                    <span class="line"></span>
-                    <span class="star"><i class="fas fa-star"></i></span>
-                </div>
-                <!-- Inline Admin Add Product Button -->
-                <div id="adminControlsContainer" style="display:none; gap: 10px; margin-top: 15px; justify-content: center;">
-                    <button id="openAdminBannerBtn" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" title="Edit Promo Banner">
-                        <i class="fas fa-bullhorn"></i> Edit Banner
-                    </button>
-                    <button id="openAdminInsightsBtn" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" title="Customer Insights">
-                        <i class="fas fa-chart-line"></i> Insights
-                    </button>
-                    <button id="addProductBtn" class="btn btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 6px;" title="Add New Product">
-                        <i class="fas fa-plus"></i> Add Product
-                    </button>
-                </div>
-            </div>
 
-            <div class="product-controls-container" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; align-items: center;">
-                <div class="search-sort-bar" style="display: flex; gap: 10px; width: 100%; max-width: 600px;">
-                    <input type="text" id="productSearch" placeholder="Search products..." style="flex: 1; padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Inter', sans-serif;">
-                    <select id="productSort" style="padding: 10px 15px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Inter', sans-serif; background: #fff; cursor: pointer;">
-                        <option value="newest">Newest</option>
-                        <option value="price_asc">Price: Low to High</option>
-                        <option value="price_desc">Price: High to Low</option>
-                    </select>
-                </div>
-
-                <div class="product-filters">
-                <button class="filter-btn active" data-filter="all">All Products</button>
-                <button class="filter-btn" data-filter="flex">Flex Printing</button>
-                <button class="filter-btn" data-filter="paper">Paper Printing</button>
-                <button class="filter-btn" data-filter="vinyl">Eco Vinyl</button>
-                <button class="filter-btn" data-filter="sublimation">Sublimation</button>
-                <button class="filter-btn" data-filter="dtf">DTF Printing</button>
-            </div>
-            <div id="subCategoryFilters" class="sub-product-filters" style="display: flex; gap: 8px; justify-content: center; margin-top: 10px; flex-wrap: wrap;"></div>
-            </div>
-
-            <!-- Admin Panel Removed (Options moved to profile & inline + button) -->
-
-            <div class="products-grid" id="productsGrid">
-                <!-- Products will be injected here dynamically -->
-            </div>
+    <!-- ==================== CATALOG HEADER ==================== -->
+    <section class="catalog-header" style="background: linear-gradient(135deg, #0b1120, #1a2a6c); position: relative; overflow: hidden; padding: 120px 0 60px; text-align: center; color: white;">
+        <div class="container" style="position: relative; z-index: 2;">
+            <h1 style="font-size: 3.5rem; margin-bottom: 15px; font-family: 'Poppins', sans-serif; font-weight: 800; text-shadow: 0 4px 20px rgba(0,0,0,0.3);">Our Services Catalog</h1>
+            <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto; opacity: 0.9;">Explore our premium printing and gifting services in detail.</p>
         </div>
     </section>
 
-    <!-- ==================== FOOTER ==================== -->
-    <footer class="footer">
-        <div class="container">
-            <!-- Footer Top: Main Columns -->
-            <div class="footer-grid">
-                <!-- Column 1: Brand -->
-                <div class="footer-col footer-brand">
-                    <img src="assets/images/ak-logo.png" alt="Atharv Graphics Logo" class="footer-logo-img">
-                    <p class="footer-brand-desc">Your one-stop solution for all printing and gifting needs. Quality, Creativity &amp; Commitment.</p>
-                    <div class="footer-social">
-                        <a href="https://www.instagram.com/atharv_graphics_ak/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.facebook.com/share/1EDQZWQjcq/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://wa.me/917058445094" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917058445094" aria-label="Phone"><i class="fas fa-phone"></i></a>
+    <!-- ==================== CATALOG LAYOUT ==================== -->
+    <section class="catalog-layout" style="padding: 60px 0; background: #f8f9fa;">
+        <div class="catalog-container" style="display: flex; gap: 40px; align-items: flex-start; width: 96%; max-width: 1800px; margin: 0 auto;">
+            
+            <!-- Sidebar Navigation -->
+            <aside class="catalog-sidebar" style="flex: 0 0 320px; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.06); padding: 30px; position: sticky; top: 100px; border: 1px solid rgba(0,0,0,0.03);">
+                <h3 style="font-size: 1.4rem; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f0f0f0; color: #1a2a6c; font-family: 'Poppins', sans-serif;">Categories</h3>
+                <ul id="catalog-nav" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+                    <!-- Injected by JS -->
+                </ul>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="catalog-content" style="flex: 1; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.06); padding: 50px; min-height: 600px; border: 1px solid rgba(0,0,0,0.03);">
+                <div id="catalog-details" style="animation: slideUp 0.4s ease;">
+                    <!-- Injected by JS -->
+                    <div style="text-align: center; padding: 80px 20px; color: #888;">
+                        <i class="fas fa-mouse-pointer" style="font-size: 4rem; margin-bottom: 25px; color: #e0e0e0;"></i>
+                        <h2 style="font-size: 1.8rem; color: #555; font-family: 'Poppins', sans-serif;">Select a category</h2>
+                        <p style="font-size: 1.1rem; max-width: 400px; margin: 0 auto;">Click on any category from the left menu to explore our detailed range of products and services.</p>
                     </div>
                 </div>
-
-                <!-- Column 2: Quick Links -->
-                <div class="footer-col">
-                    <h4 class="footer-heading">Quick Links</h4>
-                    <ul class="footer-links">
-                        <li><a href="index.html#home"><i class="fas fa-chevron-right"></i> Home</a></li>
-                        <li><a href="index.html#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
-                        <li><a href="index.html#services"><i class="fas fa-chevron-right"></i> Services</a></li>
-                        <li><a href="index.html#gallery"><i class="fas fa-chevron-right"></i> Gallery</a></li>
-                        <li><a href="#products"><i class="fas fa-chevron-right"></i> Products</a></li>
-                        <li><a href="index.html#contact"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 3: Our Services -->
-                <div class="footer-col">
-                    <h4 class="footer-heading">Our Services</h4>
-                    <ul class="footer-links">
-                        <li><a href="index.html#services"><i class="fas fa-chevron-right"></i> Gift Items</a></li>
-                        <li><a href="index.html#services"><i class="fas fa-chevron-right"></i> Flex Printing</a></li>
-                        <li><a href="index.html#services"><i class="fas fa-chevron-right"></i> Eco Printing</a></li>
-                        <li><a href="index.html#services"><i class="fas fa-chevron-right"></i> Sublimation Print</a></li>
-                        <li><a href="index.html#services"><i class="fas fa-chevron-right"></i> Visiting Cards</a></li>
-                        <li><a href="index.html#services"><i class="fas fa-chevron-right"></i> Photo Frames</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 4: Contact Info -->
-                <div class="footer-col">
-                    <h4 class="footer-heading">Contact Info</h4>
-                    <ul class="footer-contact-list">
-                        <li>
-                            <i class="fas fa-location-dot"></i>
-                            <span>Govindrao High School, Near More Dental Care, Narayan Talkies, Kagwade Mala, Ichalkaranji</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:+917058445094">+91 70584 45094</a>
-                        </li>
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:atharvkhondre495@gmail.com">atharvkhondre495@gmail.com</a>
-                        </li>
-                        <li>
-                            <i class="fas fa-clock"></i>
-                            <span>Mon - Sat: 10 AM – 8 PM<br>Sunday: Closed</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Footer Bottom -->
-            <div class="footer-bottom">
-                <p class="footer-tagline cursive-text">Thank You for <span class="underline-text">Supporting Local Business!</span> <i class="fas fa-heart"></i></p>
-                <div class="footer-bottom-bar">
-                    <p class="footer-copyright">&copy; 2024 Atharv Graphics. All Rights Reserved.</p>
-                    <p class="footer-credit">Crafted with <i class="fas fa-heart"></i> in Ichalkaranji</p>
-                </div>
-            </div>
+            </main>
         </div>
-    </footer>
+    </section>
+
+    <!-- Footer Removed -->
 
     <!-- Gallery Lightbox -->
     <div class="lightbox" id="lightbox">
@@ -237,14 +141,9 @@
             <form id="addProductForm">
                 <input type="text" id="prodTitle" placeholder="Product Title" required>
                 <select id="prodCategory" required>
-                    <option value="flex">Flex Printing</option>
-                    <option value="paper">Paper Printing</option>
-                    <option value="vinyl">Eco Vinyl Printing</option>
-                    <option value="sublimation">Sublimation Printing</option>
-                    <option value="dtf">DTF (Direct to Film) Printing</option>
-                </select>
-                <select id="prodSubCategory" required style="margin-top: 10px;">
-                    <option value="All">All</option>
+                    <option value="gifts">Personalized Gifts</option>
+                    <option value="apparel">Apparel</option>
+                    <option value="marketing">Marketing Print</option>
                 </select>
                 <input type="number" id="prodOriginalPrice" placeholder="Original Price (₹)" required>
                 <input type="number" id="prodDiscountPrice" placeholder="Discount Price (₹)" required>
@@ -252,6 +151,20 @@
                 <label>Product Image</label>
                 <input type="file" id="prodImage" accept="image/*" required>
                 <button type="submit">Save Product</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Gallery Photo Modal -->
+    <div id="addGalleryPhotoModal" class="modal admin-modal-backdrop" style="display:none;">
+        <div class="modal-content admin-modal">
+            <span class="close" id="addGalleryPhotoModalClose">&times;</span>
+            <h2>Add Gallery Photo</h2>
+            <form id="addGalleryPhotoForm">
+                <input type="text" id="galTitle" placeholder="Photo Title (e.g., Custom Mug)" required>
+                <label>Upload Image</label>
+                <input type="file" id="galImage" accept="image/*" required>
+                <button type="submit">Upload Photo</button>
             </form>
         </div>
     </div>
@@ -285,16 +198,9 @@
                 
                 <label style="display:block; margin-bottom: 5px; font-weight: 500;">Category *</label>
                 <select id="editProdCategory" required style="width:100%; padding:0.8rem; margin-bottom: 15px; border:1px solid #ddd; border-radius:4px; background: white;">
-                    <option value="flex">Flex Printing</option>
-                    <option value="paper">Paper Printing</option>
-                    <option value="vinyl">Eco Vinyl Printing</option>
-                    <option value="sublimation">Sublimation Printing</option>
-                    <option value="dtf">DTF (Direct to Film) Printing</option>
-                </select>
-
-                <label style="display:block; margin-bottom: 5px; font-weight: 500;">Sub-Category *</label>
-                <select id="editProdSubCategory" required style="width:100%; padding:0.8rem; margin-bottom: 15px; border:1px solid #ddd; border-radius:4px; background: white;">
-                    <option value="All">All</option>
+                    <option value="gifts">Personalized Gifts</option>
+                    <option value="apparel">Apparel</option>
+                    <option value="marketing">Marketing Print</option>
                 </select>
 
                 <div style="display: flex; gap: 15px; margin-bottom: 15px;">
@@ -453,10 +359,36 @@
         </div>
     </div>
 
+    <!-- Admin Orders Modal -->
+    <div id="adminOrdersModal" class="modal admin-modal-backdrop" style="display:none;">
+        <div class="modal-content admin-modal" style="max-width: 900px;">
+            <span class="close" id="adminOrdersModalClose">&times;</span>
+            <h2>Admin Orders Dashboard</h2>
+            <div style="overflow-x: auto; margin-top: 15px;">
+                <table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #eee; text-align: left;">
+                            <th style="padding: 10px;">ID</th>
+                            <th style="padding: 10px;">Customer</th>
+                            <th style="padding: 10px;">Product/Design</th>
+                            <th style="padding: 10px;">Details</th>
+                            <th style="padding: 10px;">Image</th>
+                            <th style="padding: 10px;">Status</th>
+                            <th style="padding: 10px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <!-- Orders inserted here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
-    <script src="script.js?v=2"></script>
-    <script src="userAuth.js?v=2"></script>
-    <script src="admin.js?v=2"></script>
+    <script src="script.js?v=4"></script>
+    <script src="userAuth.js?v=4"></script>
+    <script src="admin.js?v=4"></script>
 </body>
 
 </html>
