@@ -1201,7 +1201,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </span>
                             ${category.title}
                         </h2>
-                        <div class="catalog-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                        <div class="catalog-grid">
                             ${category.items.map((subItem, subIdx) => `
                                 <div class="catalog-item">
                                     <div class="catalog-card" style="animation: fadeInUpSmooth 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${subIdx * 0.08}s both;">
