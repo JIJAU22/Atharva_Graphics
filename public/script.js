@@ -953,6 +953,7 @@ document.addEventListener('DOMContentLoaded', () => {
         vinyl: ['All', 'Glossy Vinyl', 'Matte Vinyl', 'Transparent Vinyl'],
         sublimation: ['All', 'Mugs', 'Polyester Apparel', 'Keychains', 'Photo Frames', 'Cushions', 'Sipper Bottles'],
         dtf: ['All', 'Cotton T-Shirts', 'Caps', 'Tote Bags'],
+        laser_printer: ['All', 'Keychain', 'Bottle', 'Bracelet', 'Writing Pen', 'Wallet', 'Mobile Stand', 'Diary Book'],
         all: ['All']
     };
 
@@ -1162,6 +1163,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 { name: "Tote Bags & Canvas Bags", desc: "Eco-friendly customized shopping and promotional bags." },
                 { name: "Denim & Jackets", desc: "Heavy-duty fabric prints for custom fashion wear." },
                 { name: "DTF Prints Only (Roll / Sheet Supply)", desc: "Ready-to-heat-press DTF sticker sheets for other printers and garment manufacturers." }
+            ]
+        },
+        {
+            title: "Laser Printer",
+            icon: "fa-print",
+            items: [
+                { name: "Keychain", desc: "Customized laser printed keychains." },
+                { name: "Bottle", desc: "Personalized laser printed bottles." },
+                { name: "Bracelet", desc: "Custom engraved bracelets." },
+                { name: "Writing Pen", desc: "Premium laser engraved writing pens." },
+                { name: "Wallet", desc: "Personalized laser printed wallets." },
+                { name: "Mobile Stand", desc: "Custom laser printed mobile stands." },
+                { name: "Diary Book", desc: "Customized laser printed diary books." }
             ]
         }
     ];

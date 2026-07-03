@@ -6,6 +6,7 @@ const subCategoriesMap = {
   vinyl: ['All', 'Glossy Vinyl', 'Matte Vinyl', 'Transparent Vinyl'],
   sublimation: ['All', 'Mugs', 'Polyester Apparel', 'Keychains', 'Photo Frames', 'Cushions', 'Sipper Bottles'],
   dtf: ['All', 'Cotton T-Shirts', 'Caps', 'Tote Bags'],
+  laser_printer: ['All', 'Keychain', 'Bottle', 'Bracelet', 'Writing Pen', 'Wallet', 'Mobile Stand', 'Diary Book'],
   all: ['All']
 };
 

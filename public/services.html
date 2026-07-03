@@ -138,9 +138,15 @@
             <form id="addProductForm">
                 <input type="text" id="prodTitle" placeholder="Product Title" required>
                 <select id="prodCategory" required>
-                    <option value="gifts">Personalized Gifts</option>
-                    <option value="apparel">Apparel</option>
-                    <option value="marketing">Marketing Print</option>
+                    <option value="flex">Flex Printing</option>
+                    <option value="paper">Paper Printing</option>
+                    <option value="vinyl">Eco Vinyl Printing</option>
+                    <option value="sublimation">Sublimation Printing</option>
+                    <option value="dtf">DTF (Direct to Film) Printing</option>
+                    <option value="laser_printer">Laser Printer</option>
+                </select>
+                <select id="prodSubCategory" required style="margin-top: 10px;">
+                    <option value="All">All</option>
                 </select>
                 <input type="number" id="prodOriginalPrice" placeholder="Original Price (₹)" required>
                 <input type="number" id="prodDiscountPrice" placeholder="Discount Price (₹)" required>
@@ -195,9 +201,16 @@
                 
                 <label style="display:block; margin-bottom: 5px; font-weight: 500;">Category *</label>
                 <select id="editProdCategory" required style="width:100%; padding:0.8rem; margin-bottom: 15px; border:1px solid #ddd; border-radius:4px; background: white;">
-                    <option value="gifts">Personalized Gifts</option>
-                    <option value="apparel">Apparel</option>
-                    <option value="marketing">Marketing Print</option>
+                    <option value="flex">Flex Printing</option>
+                    <option value="paper">Paper Printing</option>
+                    <option value="vinyl">Eco Vinyl Printing</option>
+                    <option value="sublimation">Sublimation Printing</option>
+                    <option value="dtf">DTF (Direct to Film) Printing</option>
+                    <option value="laser_printer">Laser Printer</option>
+                </select>
+                <label style="display:block; margin-bottom: 5px; font-weight: 500;">Sub-Category *</label>
+                <select id="editProdSubCategory" required style="width:100%; padding:0.8rem; margin-bottom: 15px; border:1px solid #ddd; border-radius:4px; background: white;">
+                    <option value="All">All</option>
                 </select>
 
                 <div style="display: flex; gap: 15px; margin-bottom: 15px;">
