@@ -138,13 +138,7 @@
                         } else {
                             data.wishlist.forEach(product => {
                                 const div = document.createElement('div');
-                                div.style.display = 'flex';
-                                div.style.alignItems = 'center';
-                                div.style.justifyContent = 'space-between';
-                                div.style.padding = '15px';
-                                div.style.background = '#fff';
-                                div.style.borderRadius = '8px';
-                                div.style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
+                                div.className = 'wishlist-item-card';
 
                                 div.innerHTML = `
                                     <div style="display:flex; align-items:center; gap:20px;">
