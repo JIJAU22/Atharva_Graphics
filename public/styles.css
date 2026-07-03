@@ -2611,9 +2611,17 @@ ul {
         min-height: auto;
     }
     .profile-dropdown {
+        position: fixed;
+        top: 50%;
+        left: 50%;
         right: auto;
-        left: 0;
-        min-width: 220px;
+        transform: translate(-50%, -50%) scale(0.9) !important;
+        width: 85%;
+        max-width: 320px;
+        z-index: 10000;
+    }
+    .profile-dropdown.active {
+        transform: translate(-50%, -50%) scale(1) !important;
     }
     .wishlist-item-card {
         flex-direction: column;
