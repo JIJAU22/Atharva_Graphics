@@ -387,7 +387,6 @@ ul {
 }
 
 
-
 @keyframes marquee {
     0% { transform: translateX(0); }
     100% { transform: translateX(-100%); }
@@ -2500,6 +2499,36 @@ ul {
 /* ==========================================================================
    CATALOG PAGE STYLES (services.html)
    ========================================================================== */
+.catalog-container {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    width: 96%;
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+.catalog-sidebar {
+    flex: 0 0 320px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+    padding: 30px;
+    position: sticky;
+    top: 100px;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.catalog-content {
+    flex: 1;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+    padding: 50px;
+    min-height: 600px;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
 .catalog-nav-link {
     display: flex;
     align-items: center;
@@ -2551,6 +2580,24 @@ ul {
     100% {
         opacity: 1;
         transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .catalog-container {
+        flex-direction: column;
+    }
+    .catalog-sidebar {
+        flex: none;
+        width: 100%;
+        position: relative;
+        top: 0;
+        padding: 20px;
+    }
+    .catalog-content {
+        width: 100%;
+        padding: 20px;
+        min-height: auto;
     }
 }
 
