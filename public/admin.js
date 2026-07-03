@@ -3,10 +3,11 @@
 const subCategoriesMap = {
   flex: ['All', 'Regular Flex', 'Star Flex', 'Backlit Flex', 'Frontlit Flex'],
   paper: ['All', 'Business Cards', 'Letterheads', 'Flyers'],
-  vinyl: ['All', 'Glossy Vinyl', 'Matte Vinyl', 'Transparent Vinyl'],
+  vinyl: ['All', 'Glossy Vinyl', 'Matte Vinyl', 'Transparent Vinyl', 'Customized ID card'],
   sublimation: ['All', 'Mugs', 'Polyester Apparel', 'Keychains', 'Photo Frames', 'Cushions', 'Sipper Bottles', 'Pillows'],
   dtf: ['All', 'Cotton T-Shirts', 'Caps', 'Tote Bags'],
   laser_printer: ['All', 'Keychain', 'Bottle', 'Bracelet', 'Writing Pen', 'Wallet', 'Mobile Stand', 'Diary Book'],
+  frame: ['All'],
   all: ['All']
 };
 

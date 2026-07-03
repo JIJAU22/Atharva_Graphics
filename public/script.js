@@ -700,7 +700,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="original-price">₹${product.original_price}</span>
                         <span class="discount-price">₹${product.discount_price}</span>
                     </div>
-                    <button class="btn btn-whatsapp w-100 btn-order" data-product="${product.title}" data-price="${product.discount_price}">
+                    <button class="btn btn-whatsapp w-100 btn-order" data-product="${product.title}" data-price="${product.discount_price}" data-category="${product.category}">
                         ORDER ON WHATSAPP <i class="fab fa-whatsapp"></i>
                     </button>
                     ${isAdmin ? `
@@ -759,12 +759,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 const productId = btn.closest('.product-card').querySelector('.edit-product-btn') ? btn.closest('.product-card').querySelector('.edit-product-btn').getAttribute('data-id') : null;
                 const productName = btn.getAttribute('data-product');
                 const productPrice = btn.getAttribute('data-price');
+                const productCategory = btn.getAttribute('data-category');
                 
                 if (productName && productPrice && smartOrderModal) {
                     document.getElementById('smartOrderProductName').textContent = productName;
                     document.getElementById('smartOrderProductId').value = productId || '';
                     document.getElementById('smartOrderProductTitle').value = productName;
                     document.getElementById('smartOrderProductPrice').value = productPrice;
+                    
+                    const sizeContainer = document.getElementById('smartOrderSizeContainer');
+                    if (sizeContainer) {
+                        if (productCategory === 'frame') {
+                            sizeContainer.innerHTML = `
+                                <select id="smartOrderSize" required style="width: 100%; padding: 0.8rem; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; background: white;">
+                                    <option value="">Select Size (Inches)</option>
+                                    <option value="4x6">4x6</option>
+                                    <option value="6x8">6x8</option>
+                                    <option value="8x12">8x12</option>
+                                    <option value="10x14">10x14</option>
+                                    <option value="12x18">12x18</option>
+                                    <option value="18x24">18x24</option>
+                                    <option value="24x36">24x36</option>
+                                    <option value="36x48">36x48</option>
+                                </select>
+                            `;
+                        } else {
+                            sizeContainer.innerHTML = `
+                                <input type="text" id="smartOrderSize" placeholder="e.g., A4, 12x18 inch, L, XL" style="width: 100%; padding: 0.8rem; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
+                            `;
+                        }
+                    }
                     
                     smartOrderModal.style.display = 'flex';
                 }
@@ -957,10 +981,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const scriptSubCategoriesMap = {
         flex: ['All', 'Regular Flex', 'Star Flex', 'Backlit Flex', 'Frontlit Flex'],
         paper: ['All', 'Business Cards', 'Letterheads', 'Flyers'],
-        vinyl: ['All', 'Glossy Vinyl', 'Matte Vinyl', 'Transparent Vinyl'],
+        vinyl: ['All', 'Glossy Vinyl', 'Matte Vinyl', 'Transparent Vinyl', 'Customized ID card'],
         sublimation: ['All', 'Mugs', 'Polyester Apparel', 'Keychains', 'Photo Frames', 'Cushions', 'Sipper Bottles', 'Pillows'],
         dtf: ['All', 'Cotton T-Shirts', 'Caps', 'Tote Bags'],
         laser_printer: ['All', 'Keychain', 'Bottle', 'Bracelet', 'Writing Pen', 'Wallet', 'Mobile Stand', 'Diary Book'],
+        frame: ['All'],
         all: ['All']
     };
 
@@ -1140,13 +1165,14 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             title: "Eco Vinyl Printing",
-            icon: "fa-leaf",
+            icon: "fa-image",
             items: [
                 { name: "Vinyl Stickers & Product Labels", desc: "Die-cut or roll stickers for product packaging and branding." },
                 { name: "Sunboard Printing", desc: "Eco-vinyl mounted on 3mm/5mm foam boards for exhibitions and in-store displays." },
                 { name: "One-Way Vision", desc: "Perforated vinyl for shop glass fronts (visible advertisement from the outside, see-through from the inside)." },
                 { name: "Clear / Transparent Vinyl", desc: "See-through stickers ideal for glass doors, windows, and packaging." },
-                { name: "Wall Graphics & Custom Wallpaper", desc: "High-res prints for office interiors, cafes, and home decor." }
+                { name: "Wall Graphics & Custom Wallpaper", desc: "High-res prints for office interiors, cafes, and home decor." },
+                { name: "Customized ID card", desc: "High-quality personalized ID cards for corporate, events, and school use." }
             ]
         },
         {
@@ -1183,6 +1209,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 { name: "Wallet", desc: "Personalized laser printed wallets." },
                 { name: "Mobile Stand", desc: "Custom laser printed mobile stands." },
                 { name: "Diary Book", desc: "Customized laser printed diary books." }
+            ]
+        },
+        {
+            title: "Frames",
+            icon: "fa-image",
+            items: [
+                { name: "Custom Frames", desc: "Available in multiple sizes (4x6 to 36x48 inches) for photos and artwork." }
             ]
         }
     ];
