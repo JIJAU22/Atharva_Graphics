@@ -705,7 +705,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </button>
                     ${isAdmin ? `
                     <div style="display: flex; gap: 10px; margin-top: 10px;">
-                        <button class="btn btn-outline w-100 edit-product-btn" style="border: 1px solid var(--navy-dark); color: var(--navy-dark); padding: 0.5rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.8rem; background: transparent; transition: all 0.2s ease;" onmouseover="this.style.background='var(--navy-dark)'; this.style.color='var(--white)';" onmouseout="this.style.background='transparent'; this.style.color='var(--navy-dark)';" data-id="${product.id}" data-title="${product.title}" data-category="${product.category}" data-original="${product.original_price}" data-discount="${product.discount_price}" data-rating="${product.rating}">EDIT</button>
+                        <button class="btn btn-outline w-100 edit-product-btn" style="border: 1px solid var(--navy-dark); color: var(--navy-dark); padding: 0.5rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.8rem; background: transparent; transition: all 0.2s ease;" onmouseover="this.style.background='var(--navy-dark)'; this.style.color='var(--white)';" onmouseout="this.style.background='transparent'; this.style.color='var(--navy-dark)';" data-id="${product.id}" data-title="${product.title}" data-category="${product.category}" data-subcategory="${product.sub_category}" data-original="${product.original_price}" data-discount="${product.discount_price}" data-rating="${product.rating}">EDIT</button>
                         <button class="btn btn-outline w-100 delete-product-btn" style="border: 1px solid #ef4444; color: #ef4444; padding: 0.5rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.8rem; background: transparent; transition: all 0.2s ease;" onmouseover="this.style.background='#ef4444'; this.style.color='var(--white)';" onmouseout="this.style.background='transparent'; this.style.color='#ef4444';" data-id="${product.id}">DELETE</button>
                     </div>` : ''}
                 </div>
@@ -930,7 +930,14 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', (e) => {
                 document.getElementById('editProdId').value = btn.getAttribute('data-id');
                 document.getElementById('editProdTitle').value = btn.getAttribute('data-title');
-                document.getElementById('editProdCategory').value = btn.getAttribute('data-category');
+                
+                const catEl = document.getElementById('editProdCategory');
+                catEl.value = btn.getAttribute('data-category');
+                catEl.dispatchEvent(new Event('change'));
+                
+                const subCatEl = document.getElementById('editProdSubCategory');
+                if (subCatEl) subCatEl.value = btn.getAttribute('data-subcategory');
+
                 document.getElementById('editProdOriginalPrice').value = btn.getAttribute('data-original');
                 document.getElementById('editProdDiscountPrice').value = btn.getAttribute('data-discount');
                 document.getElementById('editProdRating').value = btn.getAttribute('data-rating');
@@ -951,7 +958,7 @@ document.addEventListener('DOMContentLoaded', () => {
         flex: ['All', 'Regular Flex', 'Star Flex', 'Backlit Flex', 'Frontlit Flex'],
         paper: ['All', 'Business Cards', 'Letterheads', 'Flyers'],
         vinyl: ['All', 'Glossy Vinyl', 'Matte Vinyl', 'Transparent Vinyl'],
-        sublimation: ['All', 'Mugs', 'Polyester Apparel', 'Keychains', 'Photo Frames', 'Cushions', 'Sipper Bottles'],
+        sublimation: ['All', 'Mugs', 'Polyester Apparel', 'Keychains', 'Photo Frames', 'Cushions', 'Sipper Bottles', 'Pillows'],
         dtf: ['All', 'Cotton T-Shirts', 'Caps', 'Tote Bags'],
         laser_printer: ['All', 'Keychain', 'Bottle', 'Bracelet', 'Writing Pen', 'Wallet', 'Mobile Stand', 'Diary Book'],
         all: ['All']
