@@ -2286,14 +2286,29 @@ ul {
     box-shadow: 0 4px 10px rgba(0,0,0,0.03);
     margin-bottom: 20px;
     transition: var(--transition);
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 600px;
 }
 .search-sort-bar:focus-within {
     box-shadow: 0 6px 15px rgba(0,0,0,0.08);
 }
 .search-sort-bar input, .search-sort-bar select {
-    border: 1px solid #e0e0e0;
-    transition: var(--transition);
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
     outline: none;
+    transition: var(--transition);
+}
+.search-sort-bar input {
+    flex: 1;
+    min-width: 0; /* Prevents input from squishing inside flexbox */
+}
+.search-sort-bar select {
+    background: #fff;
+    cursor: pointer;
 }
 .search-sort-bar input:focus, .search-sort-bar select:focus {
     border-color: var(--gold);
@@ -2634,6 +2649,17 @@ ul {
     .wishlist-item-card > div:last-child {
         width: 100%;
         justify-content: space-between;
+    }
+}
+
+/* Mobile search-sort-bar stack styling */
+@media (max-width: 576px) {
+    .search-sort-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-sort-bar input, .search-sort-bar select {
+        width: 100%;
     }
 }
 
