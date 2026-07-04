@@ -41,6 +41,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
+// Health check endpoint for keep-alive services
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'OK', timestamp: new Date() });
+});
+
 // Middleware for Admin only routes
 const requireAdmin = () => {
   return (req, res, next) => {
@@ -97,7 +102,7 @@ app.post('/api/auth/login', async (req, res) => {
   try {
     const { rows } = await db.query("SELECT * FROM users WHERE email = $1", [email]);
     const user = rows[0];
-    
+
     if (!user) return res.status(400).json({ error: 'Invalid email or password' });
 
     const isMatch = await bcrypt.compare(password, user.password_hash);
@@ -106,7 +111,7 @@ app.post('/api/auth/login', async (req, res) => {
     // Recheck admin role based on .env
     const adminEmails = process.env.ADMIN_EMAILS ? process.env.ADMIN_EMAILS.split(',').map(e => e.trim()) : [];
     let role = user.role;
-    
+
     if (adminEmails.includes(email) && role !== 'admin') {
       role = 'admin';
       await db.query("UPDATE users SET role = 'admin' WHERE id = $1", [user.id]);
@@ -153,10 +158,10 @@ app.get('/api/products', async (req, res) => {
 // POST new product (admin only)
 app.post('/api/admin/products', requireAdmin(), upload.single('image'), async (req, res) => {
   const { title, category, sub_category, original_price, discount_price, rating } = req.body;
-  
+
   try {
     let image_url = 'assets/AK_Products/ak_product_2.jpeg';
-    
+
     if (req.file) {
       const fileName = `prod-${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(req.file.originalname)}`;
       const { error } = await supabase.storage.from('products').upload(fileName, req.file.buffer, {
@@ -183,7 +188,7 @@ app.post('/api/admin/products', requireAdmin(), upload.single('image'), async (r
 app.put('/api/admin/products/:id', requireAdmin(), upload.single('image'), async (req, res) => {
   const id = req.params.id;
   const { title, category, sub_category, original_price, discount_price, rating } = req.body;
-  
+
   try {
     const { rows } = await db.query('SELECT image_url FROM products WHERE id = $1', [id]);
     const row = rows[0];
@@ -242,7 +247,7 @@ app.get('/api/gallery', async (req, res) => {
 
 app.post('/api/admin/gallery', requireAdmin(), upload.single('image'), async (req, res) => {
   const { title } = req.body;
-  
+
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'Image is required' });
@@ -254,7 +259,7 @@ app.post('/api/admin/gallery', requireAdmin(), upload.single('image'), async (re
       upsert: true
     });
     if (error) throw error;
-    
+
     const { data: publicUrlData } = supabase.storage.from('products').getPublicUrl(fileName);
     const image_url = publicUrlData.publicUrl;
 
@@ -281,7 +286,7 @@ app.delete('/api/admin/gallery/:id', requireAdmin(), async (req, res) => {
 // --- Wishlist APIs ---
 app.get('/api/users/wishlist', requireAuth(), async (req, res) => {
   const userId = req.auth.id;
-  
+
   try {
     const { rows } = await db.query(`
       SELECT p.* FROM products p
@@ -297,7 +302,7 @@ app.get('/api/users/wishlist', requireAuth(), async (req, res) => {
 app.post('/api/users/wishlist', requireAuth(), async (req, res) => {
   const userId = req.auth.id;
   const { product_id } = req.body;
-  
+
   try {
     await db.query('INSERT INTO wishlists (user_id, product_id) VALUES ($1, $2)', [userId, product_id]);
     res.json({ success: true });
@@ -312,7 +317,7 @@ app.post('/api/users/wishlist', requireAuth(), async (req, res) => {
 app.delete('/api/users/wishlist/:productId', requireAuth(), async (req, res) => {
   const userId = req.auth.id;
   const product_id = req.params.productId;
-  
+
   try {
     const result = await db.query('DELETE FROM wishlists WHERE user_id = $1 AND product_id = $2', [userId, product_id]);
     res.json({ success: true, changes: result.rowCount });
@@ -365,7 +370,7 @@ app.post('/api/custom-design/upload', upload.single('image'), async (req, res) =
   if (!req.file) {
     return res.status(400).json({ error: 'No image provided' });
   }
-  
+
   try {
     const fileName = `custom-${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(req.file.originalname)}`;
     const { error } = await supabase.storage.from('products').upload(fileName, req.file.buffer, {
@@ -373,7 +378,7 @@ app.post('/api/custom-design/upload', upload.single('image'), async (req, res) =
       upsert: true
     });
     if (error) throw error;
-    
+
     const { data: publicUrlData } = supabase.storage.from('products').getPublicUrl(fileName);
     res.json({ success: true, url: publicUrlData.publicUrl });
   } catch (err) {
@@ -384,9 +389,9 @@ app.post('/api/custom-design/upload', upload.single('image'), async (req, res) =
 // --- Smart Order API ---
 app.post('/api/orders', upload.single('image'), async (req, res) => {
   const { product_id, customer_name, customer_phone, design_type, quantity, size, requirements } = req.body;
-  
+
   const finalProductId = product_id ? parseInt(product_id, 10) : null;
-  
+
   let reference_image_url = null;
   try {
     if (req.file) {
@@ -396,7 +401,7 @@ app.post('/api/orders', upload.single('image'), async (req, res) => {
         upsert: true
       });
       if (error) throw error;
-      
+
       const { data: publicUrlData } = supabase.storage.from('products').getPublicUrl(fileName);
       reference_image_url = publicUrlData.publicUrl;
     }
